@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sahem/Core/resources/app_strings.dart';
+import 'package:sahem/Features/auth/presentation/sigin_in_view.dart';
 
 class Routes {
-  static const String logIn = "/logIn";
-  static const String sigInUP = "/sigInUP";
+  static const String login = "/";
+  static const String siginup = "/siginup";
 }
 
 class RouteGenerator {
   Route<dynamic> getAppRoutes(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.logIn:
-        return MaterialPageRoute(builder: (_) => const Center());
-      case Routes.sigInUP:
+      case Routes.login:
+        return MaterialPageRoute(builder: (_) => const SiginInView());
+      case Routes.siginup:
         return MaterialPageRoute(builder: (_) => const Center());
       default:
         return _undefinedRoute();
