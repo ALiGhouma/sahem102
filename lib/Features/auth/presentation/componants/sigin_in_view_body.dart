@@ -7,9 +7,14 @@ import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
 import 'package:sahem/Features/auth/presentation/componants/sigin_in_form.dart';
 
-class SiginInViewBody extends StatelessWidget {
+class SiginInViewBody extends StatefulWidget {
   const SiginInViewBody({super.key});
 
+  @override
+  State<SiginInViewBody> createState() => _SiginInViewBodyState();
+}
+
+class _SiginInViewBodyState extends State<SiginInViewBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

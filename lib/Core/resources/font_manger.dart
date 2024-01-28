@@ -18,6 +18,10 @@ class FontWeightManager {
 }
 
 class FontSize {
+  static double s4 = 4.0.sp;
+  static double s5 = 5.0.sp;
+  static double s6 = 6.0.sp;
+  static double s7 = 7.0.sp;
   static double s8 = 8.0.sp;
   static double s10 = 10.0.sp;
   static double s12 = 12.0.sp;
