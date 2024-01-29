@@ -52,15 +52,18 @@ class _SiginUPViewBodyState extends State<SiginUPViewBody> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppStrings.dontHaveAccount,
+                    AppStrings.haveAccount,
                     style: getRegularStyle(fontSize: FontSize.s12),
                   ),
-                  // addHorizontalSpace(1.w),
+                  //addHorizontalSpace(3),
                   TextButton(
-                      //style: ,
                       onPressed: () {},
+                      style:
+                          //TODO: need to edit this Color
+                          TextButton.styleFrom(
+                              foregroundColor: Color.fromARGB(255, 10, 8, 184)),
                       child: Text(
-                        AppStrings.register,
+                        AppStrings.logininNow,
                         style: getRegularStyle(
                             color: ColorManager.primary,
                             fontSize: FontSize.s14),

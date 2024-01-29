@@ -14,5 +14,8 @@ class AppStrings {
   static const String pssaWordfoeldRequiredLength = "⚈ العدد 8 ";
   static const String pssaWordfoeldRequiredLower = "⚈حرف صغير  ";
   static const String pssaWordfoeldRequiredUpper = "⚈ حرف كبير";
+  static const String haveAccount = "لديك حساب؟";
+  static const String logininNow = "سجل دخولك";
+
   // static const String pssaWordfoeldRequired = "⚈ ";
 }

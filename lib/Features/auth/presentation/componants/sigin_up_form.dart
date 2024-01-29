@@ -17,6 +17,7 @@ class _SiginUpFormState extends State<SiginUpForm> {
   final Key _formKey = GlobalKey<FormState>();
   final emailControler = TextEditingController();
   final passWordControler = TextEditingController();
+  final nameControler = TextEditingController();
   IconData passWordIcon = CupertinoIcons.eye_fill;
   bool obscureText = true;
   bool containsUpperCase = false;
@@ -145,18 +146,30 @@ class _SiginUpFormState extends State<SiginUpForm> {
                       AppStrings.pssaWordfoeldRequiredLower,
                       style: getRegularStyle(
                           fontSize: FontSize.s14,
-                          color:
-                              containsLowerCase ? Colors.green : Colors.black),
+                          color: containsLowerCase
+                              ? Colors.green
+                              : Colors.redAccent),
                     )
                   ],
                 )
               ],
             ),
-            // CustomTextField(
-            //     controller: controller,
-            //     hintText: hintText,
-            //     obscureText: obscureText,
-            //     keyboardType: keyboardType)
+            addVerticalSpace(16),
+            CustomTextField(
+              controller: nameControler,
+              hintText: 'الإسم',
+              obscureText: false,
+              keyboardType: TextInputType.name,
+              prefixIcon: const Icon(Icons.person),
+              validator: (val) {
+                if (val!.isEmpty) {
+                  return 'قم بتعبئة الحقل';
+                } else if (val.length > 10) {
+                  return "الإسم طويل جدا";
+                }
+                return null;
+              },
+            )
           ],
         ));
   }
