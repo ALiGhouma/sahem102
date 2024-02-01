@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/route_manager.dart';
 import 'package:sahem/Core/utils/constants.dart';
 import 'package:sahem/Core/utils/locale_manager.dart';
+import 'package:sahem/Features/home/componants/bottomnav.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp._internal();
@@ -26,10 +27,12 @@ class _MyAppState extends State<MyApp> {
         // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             localizationsDelegates: LocaleManager.localizationsDelegates,
             supportedLocales: LocaleManager.supportedLocales,
             locale: LocaleManager.supportedLocales.first,
-            onGenerateRoute: _routeGenerator.getAppRoutes,
+           onGenerateRoute: _routeGenerator.getAppRoutes,
+           // home: BottomNav(),
           );
         });
   }
