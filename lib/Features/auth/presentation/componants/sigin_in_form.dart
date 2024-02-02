@@ -23,7 +23,7 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
-  final Key _signInformKey = GlobalKey<FormState>();
+  final _signInFormKey = GlobalKey<FormState>();
 
   //String? _errorMsg;
   TextEditingController phoneController = TextEditingController();
@@ -33,7 +33,7 @@ class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _signInformKey,
+      key: _signInFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -43,6 +43,12 @@ class _SignInFormState extends State<SignInForm> {
             obscureText: false,
             keyboardType: TextInputType.name,
             prefixIcon: Icon(Icons.email_outlined),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return AppStrings.nameRequired;
+              }
+              return null;
+            },
             //errorMsg: _errorMsg,
           ),
           addVerticalSpace(15),
@@ -108,11 +114,13 @@ class _SignInFormState extends State<SignInForm> {
               }
 
               return TextButton(
-                  onPressed: () {
-                    // (+218)  the country code.
-                    String phoneNumber = "+218${phoneController.text}";
-                    BlocProvider.of<AuthCubit>(context)
-                        .sendOTP(phoneNumber, nameController.text);
+                  onPressed: () async {
+                    if (_signInFormKey.currentState!.validate()) {
+                      // (+218)  the country code.
+                      String phoneNumber = "+218${phoneController.text}";
+                      BlocProvider.of<AuthCubit>(context)
+                          .sendOTP(phoneNumber, nameController.text);
+                    }
                   },
                   style: TextButton.styleFrom(
                     minimumSize: Size(MediaQuery.of(context).size.width.w, 50),

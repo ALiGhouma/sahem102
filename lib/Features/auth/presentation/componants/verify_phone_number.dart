@@ -272,7 +272,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                     builder: (context, state) {
                       if (state is AuthLoadingState) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                              //color: ColorManager.primary,
+                              ),
                         );
                       }
                       return SizedBox(
