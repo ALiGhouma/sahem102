@@ -65,6 +65,12 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // helper funchin remmber if used loged in when close app
+  Future<bool> isUserLoggedIn() async {
+    final user = _firebaseAuth.currentUser;
+    return user != null;
+  }
+
   void logOut() async {
     emit(AuthLoggedOutState());
     _firebaseAuth.signOut();

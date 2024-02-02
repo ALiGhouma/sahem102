@@ -49,33 +49,34 @@ class _SiginInViewBodyState extends State<SiginInViewBody> {
               //     ),
               //   ),
               // ),
-              addVerticalSpace(50.h),
+              addVerticalSpace(80),
               Text(
-                "مرحبا بكم في تطبيق ساهم الذي يربطك مع الجهات",
+                " مرحبا بكم في تطبيق ساهم واجهتك  مع الجهات الخدمية ",
                 textAlign: TextAlign.center,
-                style: getBoldStyle(fontSize: FontSize.s18),
+                style: getBoldStyle(fontSize: FontSize.s16),
               ),
               addVerticalSpace(50),
               SignInForm(),
-              addVerticalSpace(32.h),
-
-              addVerticalSpace(50.h),
+              addVerticalSpace(50),
             ],
           ),
         ),
       ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            " جميع الحقوق محفوظة فريق ",
-            style: getLightStyle(),
-          ),
-          Text(
-            " اصدار رقم 2 ",
-            style: getLightStyle(),
-          ),
-        ],
+      bottomSheet: Container(
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              " جميع الحقوق محفوظة فريق ",
+              style: getLightStyle(),
+            ),
+            Text(
+              " اصدار رقم 1 ",
+              style: getLightStyle(),
+            ),
+          ],
+        ),
       ),
     );
   }

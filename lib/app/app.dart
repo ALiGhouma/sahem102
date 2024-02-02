@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
           return BlocProvider(
             create: (context) => AuthCubit(),
             child: MaterialApp(
+              debugShowCheckedModeBanner: false,
               localizationsDelegates: LocaleManager.localizationsDelegates,
               supportedLocales: LocaleManager.supportedLocales,
               locale: LocaleManager.supportedLocales.first,
