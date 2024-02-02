@@ -17,5 +17,12 @@ class AppStrings {
   static const String haveAccount = "لديك حساب؟";
   static const String logininNow = "سجل دخولك";
 
+// Verify_phone_number page
+  static const String verifyNumber = "رقم التحقق";
+  static const String sendVerify = "إرسال";
+  static const String verifyBody = "أدخل رم التحقق الذي تم ارساله إلى الرقم ";
+  static const String dontReciveCode = "لم تستلم كود التفعيل؟";
+  static const String reSendVerify = "أعد الإرسال";
+
   // static const String pssaWordfoeldRequired = "⚈ ";
 }

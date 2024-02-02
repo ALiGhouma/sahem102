@@ -19,80 +19,63 @@ class _SiginInViewBodyState extends State<SiginInViewBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: ColorManager.primary,
-        title: Text(
-          AppStrings.loginTitle,
-          style:
-              getBoldStyle(color: ColorManager.white, fontSize: FontSize.s14),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: [
+              addVerticalSpace(15),
+              // Center(
+              //   child: Container(
+              //     padding: EdgeInsets.all(16),
+              //     height: 270.h,
+              //     width: 270.w,
+              //     decoration: BoxDecoration(
+              //         //color: ColorManager.primary,
+              //         shape: BoxShape.circle,
+              //         gradient: LinearGradient(
+              //             begin: Alignment.topCenter,
+              //             end: Alignment.bottomCenter,
+              //             colors: [
+              //               ColorManager.primary,
+              //               Color.fromARGB(255, 17, 150, 116)
+              //             ])),
+              //     child: Center(
+              //       child: Text(
+              //         AppStrings.loginbody,
+              //         style: getRegularStyle(
+              //             color: ColorManager.white, fontSize: FontSize.s18),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              addVerticalSpace(50.h),
+              Text(
+                "مرحبا بكم في تطبيق ساهم الذي يربطك مع الجهات",
+                textAlign: TextAlign.center,
+                style: getBoldStyle(fontSize: FontSize.s18),
+              ),
+              addVerticalSpace(50),
+              SignInForm(),
+              addVerticalSpace(32.h),
+
+              addVerticalSpace(50.h),
+            ],
+          ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            addVerticalSpace(15),
-            Center(
-              child: Container(
-                padding: EdgeInsets.all(16),
-                height: 270.h,
-                width: 270.w,
-                decoration: BoxDecoration(
-                    //color: ColorManager.primary,
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          ColorManager.primary,
-                          Color.fromARGB(255, 17, 150, 116)
-                        ])),
-                child: Center(
-                  child: Text(
-                    AppStrings.loginbody,
-                    style: getRegularStyle(
-                        color: ColorManager.white, fontSize: FontSize.s18),
-                  ),
-                ),
-              ),
-            ),
-            addVerticalSpace(20),
-            SiginInForm(),
-            addVerticalSpace(32.h),
-            TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  minimumSize: Size(MediaQuery.of(context).size.width.w, 50),
-                  backgroundColor: ColorManager.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        10.0), // Adjust the radius as needed
-                  ),
-                ),
-                child: Text(
-                  AppStrings.login,
-                  style: getRegularStyle(color: ColorManager.white),
-                )),
-            addVerticalSpace(16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppStrings.dontHaveAccount,
-                  style: getRegularStyle(fontSize: FontSize.s12),
-                ),
-                // addHorizontalSpace(1.w),
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      AppStrings.register,
-                      style: getRegularStyle(
-                          color: ColorManager.primary, fontSize: FontSize.s14),
-                    ))
-              ],
-            )
-          ],
-        ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            " جميع الحقوق محفوظة فريق ",
+            style: getLightStyle(),
+          ),
+          Text(
+            " اصدار رقم 2 ",
+            style: getLightStyle(),
+          ),
+        ],
       ),
     );
   }

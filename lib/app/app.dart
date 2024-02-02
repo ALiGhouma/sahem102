@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/route_manager.dart';
 import 'package:sahem/Core/utils/constants.dart';
 import 'package:sahem/Core/utils/locale_manager.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
+import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
+import 'package:sahem/Features/home/presentation/home_view.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp._internal();
@@ -25,11 +30,28 @@ class _MyAppState extends State<MyApp> {
         splitScreenMode: true,
         // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
-          return MaterialApp(
-            localizationsDelegates: LocaleManager.localizationsDelegates,
-            supportedLocales: LocaleManager.supportedLocales,
-            locale: LocaleManager.supportedLocales.first,
-            onGenerateRoute: _routeGenerator.getAppRoutes,
+          return BlocProvider(
+            create: (context) => AuthCubit(),
+            child: MaterialApp(
+              localizationsDelegates: LocaleManager.localizationsDelegates,
+              supportedLocales: LocaleManager.supportedLocales,
+              locale: LocaleManager.supportedLocales.first,
+              onGenerateRoute: _routeGenerator.getAppRoutes,
+              home: BlocBuilder<AuthCubit, AuthState>(
+                buildWhen: (previous, current) {
+                  return previous is AuthInitianState;
+                },
+                builder: (context, state) {
+                  if (state is AuthLoggedInState) {
+                    return const homeView();
+                  } else if (state is AuthLoggedOutState) {
+                    return const SiginInView();
+                  } else {
+                    return const SiginInView();
+                  }
+                },
+              ),
+            ),
           );
         });
   }

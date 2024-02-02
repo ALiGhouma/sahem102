@@ -1,57 +1,147 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sahem/Core/resources/app_strings.dart';
+import 'package:sahem/Core/resources/assets_manager.dart';
+import 'package:sahem/Core/resources/color_manager.dart';
+import 'package:sahem/Core/resources/font_manger.dart';
+import 'package:sahem/Core/resources/style_manager.dart';
+import 'package:sahem/Core/resources/values_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/auth/presentation/componants/custom_text_field.dart';
+import 'package:sahem/Features/auth/presentation/componants/verify_phone_number.dart';
 
-class SiginInForm extends StatelessWidget {
-  SiginInForm({super.key});
-  String? _errorMsg;
-  bool obscurePassword = true;
-  IconData iconPassword = CupertinoIcons.eye_fill;
+class SignInForm extends StatefulWidget {
+  SignInForm({super.key});
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  Key _formKey = GlobalKey<FormState>();
+  @override
+  State<SignInForm> createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
+  final Key _signInformKey = GlobalKey<FormState>();
+
+  //String? _errorMsg;
+  TextEditingController phoneController = TextEditingController();
+
+  TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: _signInformKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            child: CustomTextField(
-              controller: emailController,
-              hintText: "username",
-              obscureText: false,
-              keyboardType: TextInputType.emailAddress,
-              prefixIcon: Icon(Icons.email_outlined),
-              errorMsg: _errorMsg,
-            ),
+          CustomTextField(
+            controller: nameController,
+            hintText: "اسم المستخدم",
+            obscureText: false,
+            keyboardType: TextInputType.name,
+            prefixIcon: Icon(Icons.email_outlined),
+            //errorMsg: _errorMsg,
           ),
           addVerticalSpace(15),
-          SizedBox(
-            child: CustomTextField(
-              controller: passwordController,
-              hintText: "الرقم السري",
-              obscureText: true,
-              prefixIcon: Icon(Icons.lock),
-              keyboardType: TextInputType.visiblePassword,
-              // validator: () {
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: 50.h,
+                child: CustomTextField(
+                  controller: phoneController,
+                  hintText: "رقم الهاتف",
+                  obscureText: false,
+                  prefixIcon: Icon(Icons.lock),
+                  keyboardType: TextInputType.number,
+                  // validator: () {
 
-              // },
-              suffixIcon: IconButton(
-                onPressed: () {
-                  obscurePassword = !obscurePassword;
-                  if (obscurePassword) {
-                    iconPassword = CupertinoIcons.eye_fill;
-                  } else {
-                    iconPassword = CupertinoIcons.eye_slash;
-                  }
-                },
-                icon: Icon(iconPassword),
+                  // },
+                ),
               ),
-            ),
-          )
+              addHorizontalSpace(15),
+              Text(
+                "+218",
+                style: getRegularStyle(fontSize: FontSize.s14),
+              ),
+              addHorizontalSpace(15),
+
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: SvgPicture.asset(
+                  ImapeAssets.libyaFlag,
+                  height: 20,
+                  width: 20,
+                ),
+              )
+              // SvgPicture.asset(
+              //   ImapeAssets.libyaFlag,
+              //   height: 20,
+              //   width: 20,
+              // )
+            ],
+          ),
+          addVerticalSpace(15),
+          BlocConsumer<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is AuthCodeSentState) {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => VerifyPhoneNumber(
+                        phoneController: phoneController,
+                        nameController: nameController),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is AuthLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return TextButton(
+                  onPressed: () {
+                    // (+218)  the country code.
+                    String phoneNumber = "+218${phoneController.text}";
+                    BlocProvider.of<AuthCubit>(context)
+                        .sendOTP(phoneNumber, nameController.text);
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(MediaQuery.of(context).size.width.w, 50),
+                    backgroundColor: ColorManager.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.r12.sp),
+                    ),
+                  ),
+                  child: Text(
+                    AppStrings.login,
+                    style: getRegularStyle(
+                        fontSize: 16, color: ColorManager.white),
+                  ));
+
+              // SizedBox(
+              //   width: MediaQuery.of(context).size.width,
+              //   child: TextButton(
+
+              //     child: const Text('Sign In'),
+              //     onPressed: () {
+              //       // Replace (+92) with the country code for your country.
+              //       String phoneNumber = "+218${phoneController.text}";
+              //       BlocProvider.of<AuthCubit>(context)
+              //           .sendOTP(phoneNumber, nameController.text);
+              //     },
+              //   ),
+              // );
+            },
+          ),
         ],
       ),
     );
