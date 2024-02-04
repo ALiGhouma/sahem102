@@ -111,6 +111,8 @@ import 'package:sahem/Core/utils/space_adder.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
+import 'package:sahem/Features/home/presentation/home_screen.dart';
+import 'package:sahem/Features/home/presentation/reports.dart';
 
 class VerifyPhoneNumber extends StatefulWidget {
   final TextEditingController phoneController;
@@ -256,10 +258,11 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                         Navigator.pushReplacement(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => homeView(
-                              userModel: state.userModel,
-                            ),
-                          ),
+                              builder: (context) => MyStepperPage()
+                              // homeView(
+                              //   userModel: state.userModel,
+                              // ),
+                              ),
                         );
                       } else if (state is AuthErrorState) {
                         ScaffoldMessenger.of(context).showSnackBar(
