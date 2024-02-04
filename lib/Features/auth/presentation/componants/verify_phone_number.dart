@@ -256,7 +256,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                         Navigator.pushReplacement(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => const homeView(),
+                            builder: (context) => homeView(
+                              userModel: state.userModel,
+                            ),
                           ),
                         );
                       } else if (state is AuthErrorState) {

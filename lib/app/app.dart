@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                 },
                 builder: (context, state) {
                   if (state is AuthLoggedInState) {
-                    return const homeView();
+                    return homeView(userModel: state.userModel);
                   } else if (state is AuthLoggedOutState) {
                     return const SiginInView();
                   } else {
