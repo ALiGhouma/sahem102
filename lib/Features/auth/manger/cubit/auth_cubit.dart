@@ -57,7 +57,7 @@ class AuthCubit extends Cubit<AuthState> {
             .collection('users')
             .doc(userCredential.user!.uid)
             .set(userModel.toFirestore());
-
+        saveCurrentUserData();
         emit(AuthLoggedInState(userCredential.user!, userModel));
       }
     } on FirebaseAuthException catch (ex) {
@@ -74,5 +74,23 @@ class AuthCubit extends Cubit<AuthState> {
   void logOut() async {
     emit(AuthLoggedOutState());
     _firebaseAuth.signOut();
+  }
+
+//  // helper funchin remmber to saveCurrentUserData
+  void saveCurrentUserData() async {
+    final user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      UserModel userModel = UserModel(
+        id: user.uid,
+        phoneNumber: user.phoneNumber!,
+        username: username!,
+      );
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(userModel.toFirestore());
+    }
   }
 }

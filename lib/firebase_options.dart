@@ -49,7 +49,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '510860714546',
     projectId: 'maharah-sahem',
     authDomain: 'maharah-sahem.firebaseapp.com',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
     storageBucket: 'maharah-sahem.appspot.com',
+    measurementId: 'G-Y3BD1FQDSG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -57,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:510860714546:android:fb8d7f0cc760eff5cad22b',
     messagingSenderId: '510860714546',
     projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
     storageBucket: 'maharah-sahem.appspot.com',
   );
 
@@ -65,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:510860714546:ios:4f32d9c4f98fee91cad22b',
     messagingSenderId: '510860714546',
     projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
     storageBucket: 'maharah-sahem.appspot.com',
     iosBundleId: 'com.example.sahem',
   );
@@ -74,6 +78,7 @@ class DefaultFirebaseOptions {
     appId: '1:510860714546:ios:8a8f7d2f22873e28cad22b',
     messagingSenderId: '510860714546',
     projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
     storageBucket: 'maharah-sahem.appspot.com',
     iosBundleId: 'com.example.sahem.RunnerTests',
   );

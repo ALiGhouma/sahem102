@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
@@ -8,55 +9,56 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
+import 'package:sahem/Features/add_report/presentation/Componants/image_step_content.dart';
 import 'package:sahem/Features/home/dropdown_list.dart';
 import 'package:sahem/Features/home/presentation/cubit/report_cubit.dart';
 import 'package:sahem/Features/home/presentation/report_camera.dart';
 import 'package:sahem/firebase_options.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
-}
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatefulWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: MyHomePage(),
+//     );
+//   }
+// }
+
+// class MyHomePage extends StatelessWidget {
+//   MyHomePage({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: AddReportVomponantsView(),
+//     );
+//   }
+//}
+
+class AddReportVomponantsView extends StatefulWidget {
+  const AddReportVomponantsView({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<AddReportVomponantsView> createState() => _MyStepperState();
 }
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _MyStepper(),
-    );
-  }
-}
-
-class _MyStepper extends StatefulWidget {
-  const _MyStepper({Key? key}) : super(key: key);
-
-  @override
-  State<_MyStepper> createState() => _MyStepperState();
-}
-
-class _MyStepperState extends State<_MyStepper> {
+class _MyStepperState extends State<AddReportVomponantsView> {
   String selectedFisrtDropdownValue = '';
   int currentStep = 0;
   String? dropdownvalue;
@@ -144,50 +146,16 @@ class _MyStepperState extends State<_MyStepper> {
 
   List<Step> getStep() => [
         Step(
-          label: Text("data"),
-          //subtitle: Text('aimen'),
-          state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 0,
-          title: Text(
-            'التقاط صورة',
-            style: getLightStyle(fontSize: 8),
-          ),
-          content: Container(
-            padding: EdgeInsets.all(50),
-            child: Column(
-              children: [
-                (_selectedImage != null)
-                    ? Column(
-                        children: [
-                          Image.file(
-                            _selectedImage!,
-                            height: 160,
-                            width: 440,
-                            fit: BoxFit.fill,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              _getImage();
-                            },
-                            child: Text('اعادة الإلتقاط'),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              _getImage();
-                            },
-                            child: Text('Add pic'),
-                          ),
-                          Text("من فضلك اضغط على الزر أعلاه لاتقاط صورة"),
-                        ],
-                      ),
-              ],
+            label: Text("data"),
+            //subtitle: Text('aimen'),
+            state: currentStep > 0 ? StepState.complete : StepState.indexed,
+            isActive: currentStep >= 0,
+            title: Text(
+              'التقاط صورة',
+              style: getLightStyle(fontSize: 8),
             ),
-          ),
-        ),
+            content: ImageStepContent(
+                selectedImage: _selectedImage, getImage: _getImage)),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,

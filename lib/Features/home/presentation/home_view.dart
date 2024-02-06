@@ -24,7 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
 
-class homeView extends StatelessWidget {
+class HomeView extends StatelessWidget {
   final UserModel userModel;
 
   final List<String> images = [
@@ -34,7 +34,7 @@ class homeView extends StatelessWidget {
     'https://image.adsoftheworld.com/xrwxxt020548rglngk3gj7329adl',
     'https://image.adsoftheworld.com/xrwxxt020548rglngk3gj7329adl',
   ];
-  homeView({Key? key, required this.userModel}) : super(key: key);
+  HomeView({Key? key, required this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

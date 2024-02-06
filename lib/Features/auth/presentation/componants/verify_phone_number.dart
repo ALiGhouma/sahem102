@@ -108,11 +108,14 @@ import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/resources/values_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
+import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
+import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
 import 'package:sahem/Features/home/presentation/home_screen.dart';
 import 'package:sahem/Features/home/presentation/reports.dart';
+import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 
 class VerifyPhoneNumber extends StatefulWidget {
   final TextEditingController phoneController;
@@ -257,8 +260,7 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
 
                         Navigator.pushReplacement(
                           context,
-                          CupertinoPageRoute(
-                              builder: (context) => MyStepperPage()
+                          CupertinoPageRoute(builder: (context) => BottomNav()
                               // homeView(
                               //   userModel: state.userModel,
                               // ),

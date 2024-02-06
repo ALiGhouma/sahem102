@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                 },
                 builder: (context, state) {
                   if (state is AuthLoggedInState) {
-                    return homeView(userModel: state.userModel);
+                    return HomeView(userModel: state.userModel);
                   } else if (state is AuthLoggedOutState) {
                     return const SiginInView();
                   } else {
