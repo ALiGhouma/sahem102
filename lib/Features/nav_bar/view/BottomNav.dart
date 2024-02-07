@@ -13,9 +13,17 @@ import 'package:sahem/Features/home/presentation/home_view.dart';
 import 'package:sahem/Features/home/presentation/reports.dart';
 import 'package:sahem/Features/nav_bar/manger/cubit/nav_cubit.dart';
 
-class BottomNav extends StatelessWidget {
+class CustomBottomNav extends StatelessWidget {
+  final UserModel userModel;
+  List<String> viewTitle = [
+    "جهات الطواريئ"
+        "الرئيسية"
+        "سجل البلاغات"
+  ];
   final NavigationCubit _navigationCubit = NavigationCubit();
   final AuthCubit _authCubit = AuthCubit();
+
+  CustomBottomNav({super.key, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +37,6 @@ class BottomNav extends StatelessWidget {
         child: BlocBuilder<NavigationCubit, int>(
           builder: (context, state) {
             return Scaffold(
-              appBar: AppBar(
-                title: Text("'Routes"),
-              ),
               body: _buildPage(state, context),
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: state,
@@ -67,26 +72,32 @@ class BottomNav extends StatelessWidget {
   Widget _buildPage(int currentIndex, BuildContext context) {
     switch (currentIndex) {
       case 0:
-        return BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is AuthLoggedOutState) {
-              // Handle logout event here
-            }
-          },
+        return BlocBuilder<AuthCubit, AuthState>(
+          // listener: (context, state) {
+          //   if (state is AuthLoggedOutState) {
+          //     // Handle logout event here
+          //   }
+          // },
+
           builder: (context, state) {
-            if (state is AuthLoggedInState) {
-              UserModel userModel = state.userModel;
-              return HomeView(
-                userModel: userModel,
-              );
-            } else {
-              return Scaffold(
-                body: Center(
-                  child: Text("Log in to access this page"),
-                ),
-              );
-            }
+            return HomeView(
+              userModel: userModel,
+            );
           },
+          //   builder: (context, state) {
+          //   if (state is AuthLoggedInState) {
+          //     UserModel userModel = state.userModel;
+          //     return HomeView(
+          //       userModel: userModel,
+          //     );
+          //   } else {
+          //     return Scaffold(
+          //       body: Center(
+          //         child: Text("Log in to access this page"),
+          //       ),
+          //     );
+          //   }
+          // },
         );
       case 1:
         return AddReportView();

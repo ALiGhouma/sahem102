@@ -5,14 +5,19 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
+import 'package:sahem/Core/resources/values_manager.dart';
+import 'package:sahem/Core/utils/space_adder.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/image_step_content.dart';
+import 'package:sahem/Features/add_report/presentation/Componants/report_completed.dart';
 import 'package:sahem/Features/home/dropdown_list.dart';
 import 'package:sahem/Features/home/presentation/cubit/report_cubit.dart';
 import 'package:sahem/Features/home/presentation/report_camera.dart';
+import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 import 'package:sahem/firebase_options.dart';
 
 // void main() async {
@@ -69,13 +74,13 @@ class _MyStepperState extends State<AddReportVomponantsView> {
     'مركز الشرطى',
     'الإسعاف',
   ];
+  bool isCompleted = false;
 
   File? _selectedImage;
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
     setState(() {
       _selectedImage = File(pickedFile!.path);
     });
@@ -84,69 +89,132 @@ class _MyStepperState extends State<AddReportVomponantsView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Stepper(
-        connectorColor: MaterialStatePropertyAll(ColorManager.primary),
-
-        // controller: ,
-        type: StepperType.horizontal,
-        steps: getStep(),
-        currentStep: currentStep,
-        onStepContinue: () {
-          final isLastStep = currentStep == getStep().length - 1;
-          if (isLastStep) {
-            //send data to server
-            print("Complat");
-          }
-          currentStep == 2
-              ? null
-              : setState(() {
-                  currentStep = currentStep + 1;
-                });
-        },
-        onStepTapped: (step) => setState(() {
-          currentStep = step;
-        }),
-        onStepCancel: () {
-          currentStep == 0
-              ? null
-              : setState(() {
-                  currentStep = currentStep - 1;
-                });
-        },
-
-        controlsBuilder: (context, ControlsDetails controlsDetails) {
-          return Container(
-            margin: EdgeInsets.all(50),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: ElevatedButton(
-                        onPressed: controlsDetails.onStepContinue,
-                        child: Text(
-                          "التالي",
-                          //style: getRegularStyle(fontSize: FontSize.s8),
-                        ))),
-                SizedBox(
-                  width: 5,
+      child: isCompleted
+          ? ReportCompleted()
+          : Column(
+              children: [
+                Container(
+                  height: AppSize.s120.h,
+                  width: MediaQuery.of(context).size.width.w,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0xFF05AC8C), Color(0xFF12787C)]),
+                  ),
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "إنشاء بلاغ جديد",
+                          style: getBoldStyle(
+                              fontSize: FontSize.s20,
+                              color: ColorManager.white),
+                        ),
+                        IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.arrow_back_ios_new,
+                              textDirection: TextDirection.ltr,
+                              color: ColorManager.white,
+                            ))
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
-                    child: ElevatedButton(
-                        onPressed: controlsDetails.onStepCancel,
-                        child: Text(
-                          "رجوع",
-                          //style: getRegularStyle(fontSize: FontSize.s8),
-                        ))),
+                    child: Theme(
+                  data: Theme.of(context).copyWith(
+                      colorScheme:
+                          ColorScheme.light(primary: ColorManager.primary)),
+                  child: Stepper(
+                    //connectorThickness: AppPadding.p23,
+                    // controller: ,
+
+                    type: StepperType.horizontal,
+                    steps: getStep(),
+                    currentStep: currentStep,
+                    onStepContinue: () {
+                      final isLastStep = currentStep == getStep().length - 1;
+                      if (isLastStep) {
+                        uploadFile();
+                        print("Complat");
+                        setState(() {
+                          isCompleted = true;
+                        });
+                      }
+                      currentStep == 2
+                          ? null
+                          : setState(() {
+                              currentStep = currentStep + 1;
+                            });
+                    },
+                    onStepTapped: (step) => setState(() {
+                      currentStep = step;
+                    }),
+                    stepIconBuilder: (stepIndex, stepState) {
+                      if (stepIndex > currentStep) {}
+                    },
+                    onStepCancel: () {
+                      currentStep == 0
+                          ? null
+                          : setState(() {
+                              currentStep = currentStep - 1;
+                            });
+                    },
+
+                    controlsBuilder:
+                        (context, ControlsDetails controlsDetails) {
+                      final isLastStep = currentStep == getStep().length - 1;
+                      return Container(
+                        margin: EdgeInsets.all(50),
+                        child: Row(
+                          children: <Widget>[
+                            if (currentStep != 0)
+                              Expanded(
+                                child: ElevatedButton(
+                                    onPressed: controlsDetails.onStepCancel,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: ColorManager.primary),
+                                    child: Text(
+                                      "رجوع",
+                                      style: getRegularStyle(
+                                          fontSize: FontSize.s12,
+                                          color: ColorManager.white),
+                                    )),
+                              ),
+                            addHorizontalSpace(15),
+                            Expanded(
+                                child: ElevatedButton(
+                                    onPressed: controlsDetails.onStepContinue,
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: ColorManager.primary),
+                                    child: Text(
+                                      isLastStep ? "التأكيد" : "التالي",
+                                      style: getRegularStyle(
+                                          fontSize: FontSize.s12,
+                                          color: ColorManager.white),
+                                    ))),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )),
               ],
             ),
-          );
-        },
-      ),
     );
   }
 
   List<Step> getStep() => [
         Step(
-            label: Text("data"),
+            label: Text(
+              'التقاط صورة',
+              style: getLightStyle(fontSize: FontSize.s8),
+            ),
             //subtitle: Text('aimen'),
             state: currentStep > 0 ? StepState.complete : StepState.indexed,
             isActive: currentStep >= 0,
@@ -156,6 +224,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
             ),
             content: ImageStepContent(
                 selectedImage: _selectedImage, getImage: _getImage)),
+
+        //Step(title: Text("تعيين موقعك الحالي "), content: CurrentLocation()),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,

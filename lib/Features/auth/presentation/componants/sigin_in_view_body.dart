@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sahem/Core/resources/app_strings.dart';
+import 'package:sahem/Core/resources/assets_manager.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
@@ -18,47 +20,32 @@ class _SiginInViewBodyState extends State<SiginInViewBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              addVerticalSpace(15),
-              // Center(
-              //   child: Container(
-              //     padding: EdgeInsets.all(16),
-              //     height: 270.h,
-              //     width: 270.w,
-              //     decoration: BoxDecoration(
-              //         //color: ColorManager.primary,
-              //         shape: BoxShape.circle,
-              //         gradient: LinearGradient(
-              //             begin: Alignment.topCenter,
-              //             end: Alignment.bottomCenter,
-              //             colors: [
-              //               ColorManager.primary,
-              //               Color.fromARGB(255, 17, 150, 116)
-              //             ])),
-              //     child: Center(
-              //       child: Text(
-              //         AppStrings.loginbody,
-              //         style: getRegularStyle(
-              //             color: ColorManager.white, fontSize: FontSize.s18),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              addVerticalSpace(80),
-              Text(
-                " مرحبا بكم في تطبيق ساهم واجهتك  مع الجهات الخدمية ",
-                textAlign: TextAlign.center,
-                style: getBoldStyle(fontSize: FontSize.s16),
-              ),
-              addVerticalSpace(50),
-              SignInForm(),
-              addVerticalSpace(50),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                //addVerticalSpace(60),
+                SvgPicture.asset(
+                  // we have other sequr Square libyan flag
+                  ImageAssets.logo,
+                ),
+                // Text(
+                //   " مرحبا بكم في تطبيق ساهم واجهتك  مع الجهات الخدمية ",
+                //   textAlign: TextAlign.center,
+                //   style: getBoldStyle(fontSize: FontSize.s16),
+                // ),
+
+                Text(
+                  AppStrings.loginTitle,
+                  textAlign: TextAlign.center,
+                  style: getBoldStyle(fontSize: FontSize.s20),
+                ),
+                addVerticalSpace(50),
+                SignInForm(),
+              ],
+            ),
           ),
         ),
       ),

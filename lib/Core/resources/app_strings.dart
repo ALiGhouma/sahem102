@@ -9,6 +9,7 @@ class AppStrings {
   static const String dontHaveAccount = "ليس لديك حساب؟";
   static const String register = "سجل";
   static const String nameRequired = "حقل الإسم مطلوب";
+  static const String phoneNumberRequired = "حقل الرقم مطلوب";
 
 // SiginUp Page
   static const String pssaWordfoeldRequirednumber = "⚈  عدد واحد";
@@ -26,4 +27,9 @@ class AppStrings {
   static const String reSendVerify = "أعد الإرسال";
 
   // static const String pssaWordfoeldRequired = "⚈ ";
+
+  // Report page
+  static const String reportConfirmed = "تم ارسال تقريركم بنجاح ";
+  static const String backToHomeView = "العودة إلى الصفحة الرئيسيية";
+  static const String goMyReports = "الذهاب إلى صفحة تقاريري";
 }

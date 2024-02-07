@@ -21,6 +21,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
 
@@ -47,17 +48,21 @@ class HomeView extends StatelessWidget {
             //this where i called the widget such customappbar
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.25,
-              decoration: const ShapeDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment(0.01, -1.00),
-                  end: Alignment(-0.01, 1),
+              height: 150.h,
+              //MediaQuery.of(context).size.height * 0.25,
+              decoration: ShapeDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+
+                  // begin: Alignment(0.01, -1.00),
+                  // end: Alignment(-0.01, 1),
                   colors: [Color(0xFF05AC8C), Color(0xFF12787C)],
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20.sp),
+                    bottomRight: Radius.circular(20.sp),
                   ),
                 ),
               ),

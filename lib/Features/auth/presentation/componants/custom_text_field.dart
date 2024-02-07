@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sahem/Core/resources/font_manger.dart';
+import 'package:sahem/Core/resources/style_manager.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -46,6 +48,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       textInputAction: TextInputAction.next,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
+        // helperStyle:
+        //     getLightStyle(fontSize: FontSize.s20, color: Color(0XFF00000070)),
         suffixIcon: widget.suffixIcon,
         prefixIcon: widget.prefixIcon,
         enabledBorder: OutlineInputBorder(
@@ -60,7 +64,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         fillColor: Colors.grey.shade200,
         filled: true,
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: Colors.grey[500]),
+        hintStyle: getLightStyle(
+          fontSize: FontSize.s14,
+          color: Colors.grey[400],
+        ),
         errorText: widget.errorMsg,
       ),
     );

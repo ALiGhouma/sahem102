@@ -101,6 +101,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pinput/pinput.dart';
 import 'package:sahem/Core/resources/app_strings.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
@@ -260,7 +261,10 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
 
                         Navigator.pushReplacement(
                           context,
-                          CupertinoPageRoute(builder: (context) => BottomNav()
+                          CupertinoPageRoute(
+                              builder: (context) => CustomBottomNav(
+                                    userModel: state.userModel,
+                                  )
                               // homeView(
                               //   userModel: state.userModel,
                               // ),
@@ -278,10 +282,11 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                     },
                     builder: (context, state) {
                       if (state is AuthLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                              //color: ColorManager.primary,
-                              ),
+                        return Center(
+                          child: LoadingAnimationWidget.discreteCircle(
+                              color: Colors.white,
+                              size: AppSize.s40,
+                              thirdRingColor: Colors.blue),
                         );
                       }
                       return SizedBox(

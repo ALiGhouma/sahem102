@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sahem/Core/resources/app_strings.dart';
 import 'package:sahem/Core/resources/assets_manager.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
@@ -39,10 +40,11 @@ class _SignInFormState extends State<SignInForm> {
         children: [
           CustomTextField(
             controller: nameController,
-            hintText: "اسم المستخدم",
+            hintText: "الإسم",
+
             obscureText: false,
             keyboardType: TextInputType.name,
-            prefixIcon: Icon(Icons.email_outlined),
+            prefixIcon: Icon(Icons.person),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return AppStrings.nameRequired;
@@ -63,11 +65,14 @@ class _SignInFormState extends State<SignInForm> {
                   controller: phoneController,
                   hintText: "رقم الهاتف",
                   obscureText: false,
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: Icon(Icons.phone_enabled),
                   keyboardType: TextInputType.number,
-                  // validator: () {
-
-                  // },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppStrings.phoneNumberRequired;
+                    }
+                    return null;
+                  },
                 ),
               ),
               addHorizontalSpace(15),
@@ -77,14 +82,21 @@ class _SignInFormState extends State<SignInForm> {
               ),
               addHorizontalSpace(15),
 
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: SvgPicture.asset(
-                  ImapeAssets.libyaFlag,
-                  height: 20,
-                  width: 20,
-                ),
+              SvgPicture.asset(
+                // we have other sequr Square libyan flag
+                ImageAssets.libyaFlag,
+                height: 32.h,
+                width: 32.h,
               )
+              // ClipRRect(
+
+              //   borderRadius: BorderRadius.circular(50),
+              //   child: SvgPicture.asset(
+              //     ImapeAssets.libyaFlag,
+              //     height: 20,
+              //     width: 20,
+              //   ),
+              // )
               // SvgPicture.asset(
               //   ImapeAssets.libyaFlag,
               //   height: 20,
@@ -108,8 +120,12 @@ class _SignInFormState extends State<SignInForm> {
             },
             builder: (context, state) {
               if (state is AuthLoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: LoadingAnimationWidget.discreteCircle(
+                      color: Colors.white,
+                      size: AppSize.s40,
+                      thirdRingColor: Colors.blue),
+                  //CircularProgressIndicator(),
                 );
               }
 
