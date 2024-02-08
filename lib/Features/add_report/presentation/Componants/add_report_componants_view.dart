@@ -12,6 +12,7 @@ import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/resources/values_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
+import 'package:sahem/Features/add_report/presentation/Componants/current_location.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/image_step_content.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/report_completed.dart';
 import 'package:sahem/Features/home/dropdown_list.dart';
@@ -96,7 +97,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                 Container(
                   height: AppSize.s120.h,
                   width: MediaQuery.of(context).size.width.w,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -178,7 +179,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                                 child: ElevatedButton(
                                     onPressed: controlsDetails.onStepCancel,
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: ColorManager.primary),
+                                        backgroundColor: Colors.grey),
                                     child: Text(
                                       "رجوع",
                                       style: getRegularStyle(
@@ -188,16 +189,33 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                               ),
                             addHorizontalSpace(15),
                             Expanded(
-                                child: ElevatedButton(
-                                    onPressed: controlsDetails.onStepContinue,
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: ColorManager.primary),
-                                    child: Text(
-                                      isLastStep ? "التأكيد" : "التالي",
-                                      style: getRegularStyle(
-                                          fontSize: FontSize.s12,
-                                          color: ColorManager.white),
-                                    ))),
+                                child: isLastStep
+                                    ? ElevatedButton(
+                                        onPressed: () {
+                                          uploadFile();
+                                          print('thanks');
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                ColorManager.primary),
+                                        child: Text(
+                                          isLastStep ? "التأكيد" : "التالي",
+                                          style: getRegularStyle(
+                                              fontSize: FontSize.s12,
+                                              color: ColorManager.white),
+                                        ))
+                                    : ElevatedButton(
+                                        onPressed:
+                                            controlsDetails.onStepContinue,
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                ColorManager.primary),
+                                        child: Text(
+                                          isLastStep ? "التأكيد" : "التالي",
+                                          style: getRegularStyle(
+                                              fontSize: FontSize.s12,
+                                              color: ColorManager.white),
+                                        ))),
                           ],
                         ),
                       );
@@ -216,7 +234,10 @@ class _MyStepperState extends State<AddReportVomponantsView> {
               style: getLightStyle(fontSize: FontSize.s8),
             ),
             //subtitle: Text('aimen'),
-            state: currentStep > 0 ? StepState.complete : StepState.indexed,
+            //state: currentStep > 0 ? StepState.complete : StepState.indexed,
+            state: _selectedImage != null || currentStep > 0
+                ? StepState.complete
+                : StepState.indexed,
             isActive: currentStep >= 0,
             title: Text(
               'التقاط صورة',
@@ -224,8 +245,22 @@ class _MyStepperState extends State<AddReportVomponantsView> {
             ),
             content: ImageStepContent(
                 selectedImage: _selectedImage, getImage: _getImage)),
-
-        //Step(title: Text("تعيين موقعك الحالي "), content: CurrentLocation()),
+        Step(
+            label: Text(
+              'التقاط صورة',
+              style: getLightStyle(fontSize: FontSize.s8),
+            ),
+            //subtitle: Text('aimen'),
+            state: currentStep > 0 ? StepState.complete : StepState.indexed,
+            isActive: currentStep >= 0,
+            title: Text(
+              'الموقع',
+              style: getLightStyle(fontSize: 8),
+            ),
+            content: CurrentLocationStepContant()),
+        // Step(
+        //     title: Text("تعيين موقعك الحالي "),
+        //     content: CurrentLocationStepContant()),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,
@@ -272,27 +307,107 @@ class _MyStepperState extends State<AddReportVomponantsView> {
             style: getLightStyle(fontSize: 8),
           ),
           content: Column(
+            //mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(selectedFisrtDropdownValue),
-              (SecondPage.secondDropdownValue != null)
-                  ? Text(SecondPage.secondDropdownValue!)
-                  : SizedBox(),
+              // Location Title & info
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: ColorManager.primary,
+                  ),
+                  addHorizontalSpace(5),
+                  Text(
+                    "عنوان البلاغ",
+                    style: getBoldStyle(fontSize: FontSize.s16),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppPadding.p16.sp),
+                child: Text(
+                  'طرابلس, طريق الشط ',
+                  style: getLightStyle(fontSize: FontSize.s12),
+                ),
+              ),
+              addVerticalSpace(16),
+
+              // Report Type & info
+              Row(
+                children: [
+                  Icon(
+                    Icons.call_split,
+                    color: ColorManager.primary,
+                  ),
+                  Text(
+                    "تصنيف البلاغ",
+                    style: getBoldStyle(fontSize: FontSize.s16),
+                  ),
+                ],
+              ),
+              addVerticalSpace(3),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppPadding.p16.sp),
+                child: Text(
+                  selectedFisrtDropdownValue,
+                  style: getRegularStyle(fontSize: FontSize.s12),
+                ),
+              ),
+              addVerticalSpace(3),
+              // Report notes
+              Row(
+                children: [
+                  (SecondPage.noteTexetController != null)
+                      ? Text(SecondPage.noteTexetController.text)
+                      : Text(
+                          "",
+                          style: getRegularStyle(
+                              color: Colors.red, fontSize: FontSize.s16),
+                        ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.flag,
+                    color: ColorManager.primary,
+                  ),
+                  addHorizontalSpace(5.w),
+                  Text(
+                    "نوع البلاغ",
+                    style: getBoldStyle(
+                      fontSize: FontSize.s16,
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppPadding.p16.h),
+                child: (SecondPage.secondDropdownValue != null)
+                    ? Text(SecondPage.secondDropdownValue!)
+                    : Text(
+                        "لم يتم اختيار نوع البلاغ",
+                        style: getRegularStyle(
+                            color: Colors.red, fontSize: FontSize.s16),
+                      ),
+              ),
+
               (_selectedImage != null)
-                  ? Image.file(
-                      _selectedImage!,
-                      height: 160,
-                      width: 440,
-                      fit: BoxFit.fill,
+                  ? SizedBox(
+                      height: 150,
+                      width: 150,
+                      child: Image.file(
+                        _selectedImage!,
+                        fit: BoxFit.cover,
+                      ),
                     )
                   : SizedBox(),
-              (SecondPage.noteTexetController != null)
-                  ? Text(SecondPage.noteTexetController.text)
-                  : SizedBox(),
-              TextButton(
-                  onPressed: () {
-                    uploadFile();
-                  },
-                  child: Text('التاكيد'))
+              // TextButton(
+              //     onPressed: () {
+              //       uploadFile();
+              //     },
+              //     child: Text('التاكيد'))
             ],
           ),
         ),

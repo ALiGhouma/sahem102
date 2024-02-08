@@ -52,7 +52,6 @@ class AuthCubit extends Cubit<AuthState> {
           phoneNumber: userCredential.user!.phoneNumber!,
           username: username!,
         );
-
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user!.uid)

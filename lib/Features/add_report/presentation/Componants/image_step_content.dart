@@ -28,8 +28,8 @@ class ImageStepContent extends StatelessWidget {
                   children: [
                     Image.file(
                       selectedImage!,
-                      height: 160,
-                      width: 440,
+                      height: 200,
+                      width: 200,
                       fit: BoxFit.fill,
                     ),
                     TextButton(

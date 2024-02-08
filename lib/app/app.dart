@@ -32,6 +32,7 @@ class _MyAppState extends State<MyApp> {
         designSize: designSize,
         minTextAdapt: true,
         splitScreenMode: true,
+
         // Use builder only if you need to use library outside ScreenUtilInit context
         builder: (_, child) {
           return BlocProvider(
