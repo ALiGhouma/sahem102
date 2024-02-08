@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -78,6 +81,81 @@ class _MyStepperState extends State<AddReportVomponantsView> {
   bool isCompleted = false;
 
   File? _selectedImage;
+  Position? _currentPosition;
+  String? _currentAddress;
+  StreamSubscription<Position>? positionStream;
+
+  void listenToLocationChanges() {
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings).listen(
+      (Position? position) {
+        print(position == null ? 'Unknown' : '$position');
+        setState(() {
+          _currentPosition = position;
+        });
+      },
+    );
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
 
   Future<void> _getImage() async {
     final picker = ImagePicker();
@@ -85,6 +163,21 @@ class _MyStepperState extends State<AddReportVomponantsView> {
     setState(() {
       _selectedImage = File(pickedFile!.path);
     });
+  }
+
+  @override
+  void initState() {
+    _getCurrentPosition();
+    // TODO: implement initState
+    super.initState();
+    listenToLocationChanges();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    positionStream?.cancel();
   }
 
   @override
@@ -257,10 +350,11 @@ class _MyStepperState extends State<AddReportVomponantsView> {
               'الموقع',
               style: getLightStyle(fontSize: 8),
             ),
-            content: CurrentLocationStepContant()),
-        // Step(
-        //     title: Text("تعيين موقعك الحالي "),
-        //     content: CurrentLocationStepContant()),
+            content: CurrentLocationStepContant(
+                Lan: _currentPosition?.longitude??0,
+                Lat: _currentPosition?.longitude??0,
+                currentAddress: _currentAddress ?? "",
+                getcurrent: _getCurrentPosition)),
         Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           isActive: currentStep >= 1,
@@ -412,6 +506,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
           ),
         ),
       ];
+
   Future uploadFile() async {
     Firebase.initializeApp();
     if (_selectedImage == null) return;

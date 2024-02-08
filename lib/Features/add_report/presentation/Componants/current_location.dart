@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,44 +6,50 @@ import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
 
-class CurrentLocationStepContant extends StatelessWidget {
-  CurrentLocationStepContant({super.key});
-  String? _currentAddress;
+class CurrentLocationStepContant extends StatefulWidget {
+  final double Lan;
+  final double Lat;
+  final Function() getcurrent;
+ final String currentAddress;
+
+  CurrentLocationStepContant({super.key, required this.Lan, required this.Lat, required this.currentAddress, required this.getcurrent});
 
   @override
+  State<CurrentLocationStepContant> createState() => _CurrentLocationStepContantState();
+}
+
+class _CurrentLocationStepContantState extends State<CurrentLocationStepContant> {
+  @override
   Widget build(BuildContext context) {
+    bool isshowtext = false;
+
     return Column(children: [
-      addVerticalSpace(5),
-      _currentAddress == null
-          ? Column(
-              children: [
-                Text(
-                  "لم يتم اصافة الموقع ",
-                  style: getRegularStyle(
-                      fontSize: FontSize.s16, color: Colors.red),
-                ),
-                addVerticalSpace(8),
-                Text(
-                  "اضغط على ايقونة لتحديد الموقع ",
-                  style: getLightStyle(fontSize: FontSize.s10),
-                ),
-              ],
-            )
-          : Text(
-              _currentAddress!,
-              style: getRegularStyle(),
-            ),
+      Text(
+        "اضغط على ايقونة لتحديد الموقع ",
+        style: getLightStyle(fontSize: FontSize.s10),
+      ),
       addVerticalSpace(16),
       IconButton(
         onPressed: () {
-          print('Current Location - LNG: ${""}, LAT: ${""}, ADDRESS: ${""}');
-        },
+          widget.getcurrent;
+          setState(() {
+            isshowtext = !isshowtext;
+          });},
         icon: Icon(
           Icons.add_location,
           size: 64.sp,
           color: ColorManager.primary,
         ),
       ),
+      Visibility(
+          visible: !isshowtext,
+          child: Column(
+            children: [
+              Text('LNG: ${widget.Lan}'),
+              Text('LAT: ${widget.Lat}'),
+              Text('ADDRESS: ${widget.currentAddress}'),
+            ],
+          ))
     ]);
   }
 }
