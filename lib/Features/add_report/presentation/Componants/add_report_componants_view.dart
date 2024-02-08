@@ -252,6 +252,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                       if (isLastStep) {
                         uploadFile();
                         print("Complat");
+
                         setState(() {
                           isCompleted = true;
                         });
@@ -420,7 +421,31 @@ class _MyStepperState extends State<AddReportVomponantsView> {
             //mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              (_selectedImage != null)
+                  ? SizedBox(
+                      //height: 150,
+                      child: Container(
+                        width: 140,
+                        height: 120,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                15) // Adjust the radius as needed
+                            ),
+                        child: Image.file(
+                          _selectedImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      // Image.file(
+                      //   _selectedImage!,
+                      //   fit: BoxFit.contain,
+                      //   cacheHeight: 300,
+                    )
+                  : SizedBox(),
+              addVerticalSpace(8),
               // Location Title & info
+
               Row(
                 children: [
                   Icon(
@@ -532,16 +557,6 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                       ),
               ),
 
-              (_selectedImage != null)
-                  ? SizedBox(
-                      height: 150,
-                      width: 150,
-                      child: Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : SizedBox(),
               TextButton(
                   onPressed: () {
                     uploadFile();

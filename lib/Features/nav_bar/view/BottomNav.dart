@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
+import 'package:sahem/Core/utils/constants.dart';
 import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
@@ -27,46 +29,61 @@ class CustomBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _navigationCubit,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: _navigationCubit),
-          BlocProvider.value(value: _authCubit),
-        ],
-        child: BlocBuilder<NavigationCubit, int>(
-          builder: (context, state) {
-            return Scaffold(
-              body: _buildPage(state, context),
-              bottomNavigationBar: BottomNavigationBar(
-                currentIndex: state,
-                onTap: (index) {
-                  _navigationCubit
-                      .navigateToPage(_navigationCubit.mapIndexToEvent(index));
-                },
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.emergency, color: ColorManager.white),
-                    label: 'جهات الطوارئ',
-                  ),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home, color: ColorManager.white),
-                      label: 'الرئيسية',
-                      backgroundColor: ColorManager.white),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.sticky_note_2_outlined,
-                      color: ColorManager.white,
+    return ScreenUtilInit(
+        designSize: designSize,
+        minTextAdapt: true,
+        splitScreenMode: true,
+
+        // Use builder only if you need to use library outside ScreenUtilInit context
+        builder: (_, child) {
+          return BlocProvider.value(
+            value: _navigationCubit,
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: _navigationCubit),
+                BlocProvider.value(value: _authCubit),
+              ],
+              child: BlocBuilder<NavigationCubit, int>(
+                builder: (context, state) {
+                  return Scaffold(
+                    body: _buildPage(state, context),
+                    bottomNavigationBar: BottomNavigationBar(
+                      currentIndex: state,
+                      onTap: (index) {
+                        _navigationCubit.navigateToPage(
+                            _navigationCubit.mapIndexToEvent(index));
+                      },
+                      selectedItemColor: ColorManager.primary,
+                      unselectedItemColor:
+                          ColorManager.primary.withOpacity(0.3),
+                      //unselectedItemColor: Color,
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.emergency,
+                          ),
+                          label: 'جهات الطوارئ',
+                        ),
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.home,
+                            ),
+                            label: 'الرئيسية',
+                            backgroundColor: ColorManager.white),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.sticky_note_2_outlined,
+                          ),
+                          label: 'البلاغات',
+                        ),
+                      ],
                     ),
-                    label: 'البلاغات',
-                  ),
-                ],
+                  );
+                },
               ),
-            );
-          },
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   Widget _buildPage(int currentIndex, BuildContext context) {
@@ -78,7 +95,6 @@ class CustomBottomNav extends StatelessWidget {
           //     // Handle logout event here
           //   }
           // },
-
           builder: (context, state) {
             return HomeView(
               userModel: userModel,
@@ -114,29 +130,3 @@ class CustomBottomNav extends StatelessWidget {
     }
   }
 }
-
-
-
-
-
-//   Widget _buildPage(int currentIndex) {
-//     switch (currentIndex) {
-//       case 0:
-//         return HomeView(
-//           userModel: _authCubit,
-//         );
-//       case 1:
-//         return AddReportView();
-//       case 2:
-//         return AddReportView();
-//       case 3:
-//         return Scaffold(
-//           body: Center(
-//             child: Text(" empty page"),
-//           ),
-//         );
-//       default:
-//         return Container();
-//     }
-//   }
-// }
