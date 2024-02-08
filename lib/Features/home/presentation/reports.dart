@@ -223,7 +223,7 @@ class _MyStepperState extends State<_MyStepper> {
                     },
                   ),
                 ),
-                SecondPage(checker: firstDropdown)
+                SecondDropDownlist(checker: firstDropdown)
               ])),
         ),
         Step(
@@ -236,8 +236,8 @@ class _MyStepperState extends State<_MyStepper> {
           content: Column(
             children: [
               Text(selectedFisrtDropdownValue),
-              (SecondPage.secondDropdownValue != null)
-                  ? Text(SecondPage.secondDropdownValue!)
+              (SecondDropDownlist.secondDropdownValue != null)
+                  ? Text(SecondDropDownlist.secondDropdownValue!)
                   : SizedBox(),
               (_selectedImage != null)
                   ? Image.file(
@@ -247,8 +247,8 @@ class _MyStepperState extends State<_MyStepper> {
                       fit: BoxFit.fill,
                     )
                   : SizedBox(),
-              (SecondPage.noteTexetController != null)
-                  ? Text(SecondPage.noteTexetController.text)
+              (SecondDropDownlist.noteTexetController != null)
+                  ? Text(SecondDropDownlist.noteTexetController.text)
                   : SizedBox(),
               TextButton(
                   onPressed: () {

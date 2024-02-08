@@ -7,5 +7,5 @@ class ImageAssets {
 }
 
 class IconsAssets {
-  //static const String logo = '${imagesPath}logo.jpg';
+  static const String reportNote = '${iconsPath}reportnote.svg';
 }

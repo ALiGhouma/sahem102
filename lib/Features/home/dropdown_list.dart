@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class SecondPage extends StatefulWidget {
+class SecondDropDownlist extends StatefulWidget {
   static String? secondDropdownValue;
   static TextEditingController noteTexetController = TextEditingController();
   final int checker;
   //void Function(String?) onDropdownValueChanged; // Function to pass the selected value to the parent class
 
-  SecondPage({Key? key, required this.checker}) : super(key: key);
+  SecondDropDownlist({Key? key, required this.checker}) : super(key: key);
 
   @override
-  State<SecondPage> createState() => _SecondPageState();
+  State<SecondDropDownlist> createState() => _SecondPageState();
 }
 
-class _SecondPageState extends State<SecondPage> {
+class _SecondPageState extends State<SecondDropDownlist> {
   @override
   Widget build(BuildContext context) {
     Widget contentWidget;
@@ -23,16 +23,25 @@ class _SecondPageState extends State<SecondPage> {
     // Determine the items for the second dropdown list based on the value of the first dropdown
     if (widget.checker == 0) {
       // If the first dropdown value corresponds to the first item in the list
-      secondItems = ['1', '2', '3'];
+      secondItems = [
+        'حفرة في الطريق',
+        'تحسين المشهد الحضاري',
+        'نظافة عامة',
+        'أرصفة وحواجز طرق متهالكة'
+      ];
     } else if (widget.checker == 1) {
       // If the first dropdown value corresponds to the second item in the list
-      secondItems = ['4', '5', '6'];
+      secondItems = [
+        'انقطاع التيار الكهربائي',
+        'وصلات كهربائية غير شرعية',
+        'أعمدة انارة عامة'
+      ];
     } else if (widget.checker == 3) {
       // If the first dropdown value corresponds to the second item in the list
-      secondItems = ['7', '8', '9'];
+      secondItems = ['عرقلة الطريق العام', 'حواجز طريق', 'سيارات تالفة ومهملة'];
     } else if (widget.checker == 2) {
       // If the first dropdown value corresponds to the second item in the list
-      secondItems = ['10', '11', '12'];
+      // secondItems = ['10', '11', '12'];
     } else if (widget.checker == 5) {
       // If the first dropdown value corresponds to the second item in the list
       secondItems = [];
@@ -53,18 +62,19 @@ class _SecondPageState extends State<SecondPage> {
               }).toList(),
               onChanged: (String? newValue) {
                 setState(() {
-                  SecondPage.secondDropdownValue = newValue;
+                  SecondDropDownlist.secondDropdownValue = newValue;
                 });
               }),
         ),
-        (widget.checker == 5)
-            ? SizedBox()
-            : TextField(
-                controller: SecondPage.noteTexetController,
-                decoration: InputDecoration(
-                    hintText: "أضف بعض التفاصيل لو أمكن",
-                    border: OutlineInputBorder()),
-              )
+        // (widget.checker == 5)
+        //     ? SizedBox()
+        //     :
+        TextField(
+          controller: SecondDropDownlist.noteTexetController,
+          decoration: InputDecoration(
+              hintText: "أضف بعض التفاصيل لو أمكن",
+              border: OutlineInputBorder()),
+        )
       ],
     );
   }

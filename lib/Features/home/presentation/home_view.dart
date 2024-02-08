@@ -112,12 +112,15 @@ class HomeView extends StatelessWidget {
                       height: 100,
                       width: 300,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          images[index],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            color: ColorManager.primarylitht,
+                          )
+                          // Image.network(
+                          //   images[index],
+                          //   fit: BoxFit.cover,
+                          // ),
+                          ),
                     ),
                   );
                 },

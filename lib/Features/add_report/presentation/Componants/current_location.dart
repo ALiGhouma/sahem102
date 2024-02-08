@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
@@ -10,39 +9,59 @@ class CurrentLocationStepContant extends StatefulWidget {
   final double Lan;
   final double Lat;
   final Function() getcurrent;
- final String currentAddress;
+  final String currentAddress;
+  bool locationpermaion = false;
+  bool isshowtext = false;
 
-  CurrentLocationStepContant({super.key, required this.Lan, required this.Lat, required this.currentAddress, required this.getcurrent});
+  CurrentLocationStepContant(
+      {super.key,
+      required this.Lan,
+      required this.Lat,
+      required this.currentAddress,
+      required this.getcurrent});
 
   @override
-  State<CurrentLocationStepContant> createState() => _CurrentLocationStepContantState();
+  State<CurrentLocationStepContant> createState() =>
+      _CurrentLocationStepContantState();
 }
 
-class _CurrentLocationStepContantState extends State<CurrentLocationStepContant> {
+class _CurrentLocationStepContantState
+    extends State<CurrentLocationStepContant> {
   @override
   Widget build(BuildContext context) {
-    bool isshowtext = false;
-
     return Column(children: [
-      Text(
-        "اضغط على ايقونة لتحديد الموقع ",
-        style: getLightStyle(fontSize: FontSize.s10),
-      ),
+      !widget.isshowtext
+          ? Text(
+              "اضغط على ايقونة لتحديد الموقع ",
+              style: getLightStyle(fontSize: FontSize.s10),
+            )
+          : Text(
+              "اضغط مرة اخرى لحذف الموقع ",
+              style: getLightStyle(color: Colors.red, fontSize: FontSize.s14),
+            ),
       addVerticalSpace(16),
       IconButton(
         onPressed: () {
           widget.getcurrent;
           setState(() {
-            isshowtext = !isshowtext;
-          });},
-        icon: Icon(
-          Icons.add_location,
-          size: 64.sp,
-          color: ColorManager.primary,
-        ),
+            widget.isshowtext = !widget.isshowtext;
+            print(widget.isshowtext);
+          });
+        },
+        icon: widget.isshowtext
+            ? Icon(
+                Icons.location_off_outlined,
+                size: 64.sp,
+                color: ColorManager.primary,
+              )
+            : Icon(
+                Icons.add_location_alt_outlined,
+                size: 64.sp,
+                color: ColorManager.primary,
+              ),
       ),
       Visibility(
-          visible: !isshowtext,
+          visible: widget.isshowtext,
           child: Column(
             children: [
               Text('LNG: ${widget.Lan}'),

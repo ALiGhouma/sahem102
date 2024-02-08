@@ -553,6 +553,27 @@ class _MyStepperState extends State<AddReportVomponantsView> {
         ),
       ];
 
+  // Future uploadFile() async {
+  //   Firebase.initializeApp();
+  //   if (_selectedImage == null) return;
+  //   final fileName = _selectedImage?.path;
+  //   final destination = 'files/$fileName';
+  //   var time = DateTime.now().toString();
+
+  //   try {
+  //     // final ref = firebase_storage.FirebaseStorage.instance
+  //     //     .ref(destination)
+  //     //     .child('reportesimage/id');
+  //     await firebase_storage.FirebaseStorage.instance
+  //         .ref('reportesimage/$time.png')
+  //         .putFile(_selectedImage!);
+
+  //     //await ref.putFile(_selectedImage!);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   Future<String?> uploadFile() async {
     if (_selectedImage == null) return null;
 
@@ -578,23 +599,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
 
   void sendReportToFirebase(BuildContext context) async {
     try {
-      // Show CircularProgressIndicator while data is being processed
-      showDialog(
-        context: context,
-        barrierDismissible:
-            false, // Prevent dismissing the dialog by tapping outside
-        builder: (BuildContext context) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
-
       // Upload the image and get the download URL
       var imageURL = await uploadFile();
-
-      // Get the current location
-      var currentLocation = await _getCurrentPosition();
 
       // Get a reference to the Firestore database
       final firestore = FirebaseFirestore.instance;
@@ -606,21 +612,15 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       // Prepare the data to be sent
       var data = {
         'reportId': reportId,
-        'Catrogy': selectedFirstDropdownValue,
-        'Type': SecondDropDownlist.secondDropdownValue,
-        'Notes': SecondDropDownlist.noteTexetController.text,
-        'latitude': _currentPosition!.latitude,
-        'longitude': _currentPosition?.longitude,
-        'address': _currentAddress,
-        'reviewed':
-            false, // Flag indicating whether the report has been reviewed
+        'selectedFirstDropdownValue': selectedFirstDropdownValue,
+        'secondDropdownValue': SecondDropDownlist.secondDropdownValue,
+        'noteText': SecondDropDownlist.noteTexetController.text,
+        'imageURL': imageURL ??
+            '', // Use imageURL if available, otherwise an empty string
       };
 
       // Add the data to Firestore
       await firestore.collection('reports').doc(reportId.toString()).set(data);
-
-      // Close the CircularProgressIndicator dialog
-      Navigator.pop(context);
 
       // Show a success Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
@@ -633,9 +633,6 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       // For example:
       // resetForm();
     } catch (e) {
-      // Close the CircularProgressIndicator dialog
-      Navigator.pop(context);
-
       // Show an error Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -647,14 +644,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
     }
   }
 
-  // void sendReportToFirebase(BuildContext context) async {
+  // void sendReportToFirebase() async {
   //   try {
-  //     // Upload the image and get the download URL
-  //     var imageURL = await uploadFile();
-
-  //     // Get the current location
-  //     var currentLocation = await _getCurrentPosition();
-
   //     // Get a reference to the Firestore database
   //     final firestore = FirebaseFirestore.instance;
 
@@ -665,40 +656,19 @@ class _MyStepperState extends State<AddReportVomponantsView> {
   //     // Prepare the data to be sent
   //     var data = {
   //       'reportId': reportId,
-  //       'Catrogy': selectedFirstDropdownValue,
-  //       'Type': SecondDropDownlist.secondDropdownValue,
-  //       'Notes': SecondDropDownlist.noteTexetController.length > 0
-  //           ? SecondDropDownlist.noteTexetController.text
-  //           : 'لاتوجد ملاحظات',
-  //       'imageURL': imageURL ??
-  //           '', // Use imageURL if available, otherwise an empty string
-  //       'latitude': _currentPosition!.latitude,
-  //       'longitude': _currentPosition?.longitude,
-  //       'address': _currentAddress,
-  //       'reviewed': false,
+  //       'ReportCatrogy': selectedFirstDropdownValue,
+  //       'ReportType': SecondDropDownlist.secondDropdownValue,
+  //       'Reportnotes': SecondDropDownlist.noteTexetController.text,
+  //       'imageURL': _selectedImage != null ? 'URL_of_your_image' : '',
   //     };
 
   //     // Add the data to Firestore
   //     await firestore.collection('reports').doc(reportId.toString()).set(data);
 
-  //     // Show a success Snackbar
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('تم إرسال البلاغ بنجاح'),
-  //       ),
-  //     );
-
   //     // Reset the form or perform any other actions after sending the report
   //     // For example:
   //     // resetForm();
   //   } catch (e) {
-  //     // Show an error Snackbar
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('حدث خطأ أثناء إرسال البلاغ'),
-  //       ),
-  //     );
-
   //     print('Error sending report: $e');
   //   }
   // }
