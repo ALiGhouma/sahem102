@@ -61,9 +61,9 @@ class _MyAppState extends State<MyApp> {
                   if (state is AuthLoggedInState) {
                     return HomeView(userModel: state.userModel);
                   } else if (state is AuthLoggedOutState) {
-                    return const Myprofile();
+                    return const SiginInView();
                   } else {
-                    return const Myprofile();
+                    return const SiginInView();
                   }
                 },
               ),
