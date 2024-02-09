@@ -27,10 +27,10 @@ class _SiginInViewBodyState extends State<SiginInViewBody> {
             child: Column(
               children: [
                 //addVerticalSpace(60),
-                SvgPicture.asset(
-                  // we have other sequr Square libyan flag
-                  ImageAssets.logo,
-                ),
+                // SvgPicture.asset(
+                //   // we have other sequr Square libyan flag
+                //   ImageAssets.logo,
+                // ),
                 // Text(
                 //   " مرحبا بكم في تطبيق ساهم واجهتك  مع الجهات الخدمية ",
                 //   textAlign: TextAlign.center,

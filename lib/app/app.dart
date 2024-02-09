@@ -59,8 +59,13 @@ class _MyAppState extends State<MyApp> {
                   // phoneNumber: state.us,
                   //  username: '',);
                   if (state is AuthLoggedInState) {
-                    return HomeView(userModel: state.userModel);
-                  } else if (state is AuthLoggedOutState) {
+                    return HomeView(
+                        userModel: UserModel(
+                      id: "525",
+                      phoneNumber: "أيمن",
+                      username: "0920000000",
+                    ));
+                  } else if (state is AuthLoggedInState) {
                     return const SiginInView();
                   } else {
                     return const SiginInView();
