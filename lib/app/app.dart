@@ -10,6 +10,7 @@ import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
+import 'package:sahem/Features/my_profile/myprofile.dart';
 import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 
 class MyApp extends StatefulWidget {
@@ -60,9 +61,9 @@ class _MyAppState extends State<MyApp> {
                   if (state is AuthLoggedInState) {
                     return HomeView(userModel: state.userModel);
                   } else if (state is AuthLoggedOutState) {
-                    return const SiginInView();
+                    return const Myprofile();
                   } else {
-                    return const SiginInView();
+                    return const Myprofile();
                   }
                 },
               ),

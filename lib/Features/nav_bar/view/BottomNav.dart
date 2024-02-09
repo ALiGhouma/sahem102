@@ -11,6 +11,7 @@ import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/emergencyContact/emergency_contact.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
+import 'package:sahem/Features/myreport/my_reports.dart';
 import 'package:sahem/Features/nav_bar/manger/cubit/nav_cubit.dart';
 
 class CustomBottomNav extends StatelessWidget {
@@ -117,12 +118,12 @@ class CustomBottomNav extends StatelessWidget {
           builder: (context, state) {
             return HomeView(
               userModel: UserModel(
-                  id: "id", phoneNumber: "090000000", username: "username"),
+                  id: "id", phoneNumber: "090000000", username: "أيمن"),
             );
           },
         );
       case 2:
-        return AddReportView();
+        return ReportHistory();
       case 3:
         return Scaffold(
           body: Center(
