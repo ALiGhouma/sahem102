@@ -72,35 +72,3 @@ class _CurrentLocationStepContantState
     ]);
   }
 }
-
-// class CurrentLocation extends StatelessWidget {
-//    CurrentLocation({super.key});
-
-//   String? _currentAddress;
-// }
-
-// @override
-//   Widget build(BuildContext context) {
-   
-      
-//     return Column(
-//       children: [
-//         TextButton(
-//           onPressed: () {
-            
-//             print(
-//                 'Current Location - LNG: ${""}, LAT: ${""}, ADDRESS: ${ ""}');
-//           },
-//           child: Column(
-//             children: [
-//               Text("تحديد موقعك"),
-//               addVerticalSpace(50),
-//               if (_currentAddress != null)
-//                 Text("Current Address: $_currentAddress"),
-//             ],
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }

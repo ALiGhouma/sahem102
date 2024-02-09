@@ -9,10 +9,8 @@ import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart
 import 'package:sahem/Features/auth/data/user_model.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
-import 'package:sahem/Features/home/presentation/emergency_contact.dart';
-import 'package:sahem/Features/home/presentation/home_screen.dart';
+import 'package:sahem/Features/emergencyContact/emergency_contact.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
-import 'package:sahem/Features/home/presentation/reports.dart';
 import 'package:sahem/Features/nav_bar/manger/cubit/nav_cubit.dart';
 
 class CustomBottomNav extends StatelessWidget {
@@ -87,6 +85,7 @@ class CustomBottomNav extends StatelessWidget {
   }
 
   Widget _buildPage(int currentIndex, BuildContext context) {
+    final authCubit = BlocProvider.of<AuthCubit>(context);
     switch (currentIndex) {
       case 0:
         return BlocBuilder<AuthCubit, AuthState>(
@@ -96,9 +95,7 @@ class CustomBottomNav extends StatelessWidget {
           //   }
           // },
           builder: (context, state) {
-            return HomeView(
-              userModel: userModel,
-            );
+            return EmergencyContact();
           },
           //   builder: (context, state) {
           //   if (state is AuthLoggedInState) {
@@ -116,7 +113,14 @@ class CustomBottomNav extends StatelessWidget {
           // },
         );
       case 1:
-        return AddReportView();
+        return BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            return HomeView(
+              userModel: UserModel(
+                  id: "id", phoneNumber: "090000000", username: "username"),
+            );
+          },
+        );
       case 2:
         return AddReportView();
       case 3:

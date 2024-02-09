@@ -1,102 +1,3 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:pinput/pinput.dart';
-// import 'package:sahem/Core/resources/color_manager.dart';
-// import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
-// import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
-// import 'package:sahem/Features/home/presentation/home_view.dart';
-
-// class VerifyPhoneNumber extends StatelessWidget {
-//   const VerifyPhoneNumber({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     TextEditingController optController = TextEditingController();
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         title: const Text('Verify Number'),
-//       ),
-//       body: SafeArea(
-//           child: ListView(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 // TextField(
-//                 //   controller: optController,
-//                 //   maxLength: 6,
-//                 //   keyboardType: TextInputType.number,
-//                 //   decoration: const InputDecoration(
-//                 //     border: OutlineInputBorder(),
-//                 //     hintText: '6 رمز التحقق',
-//                 //     counterText: "",
-//                 //   ),
-//                 // ),
-//                 Pinput(
-//                   controller: optController,
-//                   length: 6,
-//                   keyboardType: TextInputType.number,
-//                   onCompleted: (otp) {
-//                     BlocProvider.of<AuthCubit>(context).verifyOTP(otp);
-//                   },
-//                 ),
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                 BlocConsumer<AuthCubit, AuthState>(
-//                   listener: (context, state) {
-//                     if (state is AuthLoggedInState) {
-//                       Navigator.popUntil(context, (route) => route.isFirst);
-
-//                       Navigator.pushReplacement(
-//                         context,
-//                         CupertinoPageRoute(
-//                           builder: (context) => const homeView(),
-//                         ),
-//                       );
-//                     } else if (state is AuthErrorState) {
-//                       ScaffoldMessenger.of(context).showSnackBar(
-//                         SnackBar(
-//                           content: Text(state.error),
-//                           duration: const Duration(milliseconds: 600),
-//                           backgroundColor: Colors.red,
-//                         ),
-//                       );
-//                     }
-//                   },
-//                   builder: (context, state) {
-//                     if (state is AuthLoadingState) {
-//                       return const Center(
-//                         child: CircularProgressIndicator(),
-//                       );
-//                     }
-//                     return SizedBox(
-//                       width: MediaQuery.of(context).size.width,
-//                       child: CupertinoButton(
-//                         color: ColorManager.primary,
-//                         child: const Text('Verify'),
-//                         onPressed: () {
-//                           BlocProvider.of<AuthCubit>(context)
-//                               .verifyOTP(optController.text);
-//                         },
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
-//           )
-//         ],
-//       )),
-//     );
-//   }
-// }
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,13 +10,9 @@ import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/resources/values_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
-import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
-import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
-import 'package:sahem/Features/home/presentation/home_screen.dart';
-import 'package:sahem/Features/home/presentation/reports.dart';
 import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 
 class VerifyPhoneNumber extends StatefulWidget {
@@ -265,9 +162,9 @@ class _VerifyPhoneNumberState extends State<VerifyPhoneNumber> {
                               builder: (context) => CustomBottomNav(
                                     userModel: state.userModel,
                                   )
-                              // homeView(
-                              //   userModel: state.userModel,
-                              // ),
+                              //   HomeView(
+                              // userModel: state.userModel,
+                              //),
                               ),
                         );
                       } else if (state is AuthErrorState) {

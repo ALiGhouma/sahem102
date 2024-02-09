@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
 
-abstract class AuthState {}
+abstract class AuthState {
+  get userModel => null;
+}
 
 class AuthInitianState extends AuthState {}
 

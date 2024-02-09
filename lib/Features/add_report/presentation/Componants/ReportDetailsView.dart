@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class SecondDropDownlist extends StatefulWidget {
+class ReportDetails extends StatefulWidget {
   static String? secondDropdownValue;
   static TextEditingController noteTexetController = TextEditingController();
   final int checker;
   //void Function(String?) onDropdownValueChanged; // Function to pass the selected value to the parent class
 
-  SecondDropDownlist({Key? key, required this.checker}) : super(key: key);
+  ReportDetails({Key? key, required this.checker}) : super(key: key);
 
   @override
-  State<SecondDropDownlist> createState() => _SecondPageState();
+  State<ReportDetails> createState() => _SecondPageState();
 }
 
-class _SecondPageState extends State<SecondDropDownlist> {
+class _SecondPageState extends State<ReportDetails> {
   @override
   Widget build(BuildContext context) {
     Widget contentWidget;
@@ -62,7 +62,7 @@ class _SecondPageState extends State<SecondDropDownlist> {
               }).toList(),
               onChanged: (String? newValue) {
                 setState(() {
-                  SecondDropDownlist.secondDropdownValue = newValue;
+                  ReportDetails.secondDropdownValue = newValue;
                 });
               }),
         ),
@@ -70,7 +70,7 @@ class _SecondPageState extends State<SecondDropDownlist> {
         //     ? SizedBox()
         //     :
         TextField(
-          controller: SecondDropDownlist.noteTexetController,
+          controller: ReportDetails.noteTexetController,
           decoration: InputDecoration(
               hintText: "أضف بعض التفاصيل لو أمكن",
               border: OutlineInputBorder()),

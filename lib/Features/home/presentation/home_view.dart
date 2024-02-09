@@ -23,6 +23,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
+import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
 
 class HomeView extends StatelessWidget {
@@ -93,9 +94,19 @@ class HomeView extends StatelessWidget {
                 Positioned(
                   right: MediaQuery.of(context).size.width * 0.1,
                   top: MediaQuery.of(context).size.height * 0.17,
-                  child: Text(
-                    'مرحبا بيك ...',
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  child: Row(
+                    children: [
+                      Text(
+                        'مرحبا بيك  ',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      Text(
+                        userModel.username,
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 196, 238, 232)),
+                      ),
+                    ],
                   ),
                 ),
               ]),
@@ -126,8 +137,8 @@ class HomeView extends StatelessWidget {
                 },
               ),
             ),
-            Text('Welcome ${userModel.username}'),
-            Text('Phone Number: ${userModel.phoneNumber}'),
+            // Text('Welcome ${userModel.username}'),
+            // Text('Phone Number: ${userModel.phoneNumber}'),
 
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.01,
@@ -145,7 +156,15 @@ class HomeView extends StatelessWidget {
                 children: [
                   Center(
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AddReportView(), // Replace YourOtherPage() with the actual name of your other page
+                          ),
+                        );
+                      },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.65,
                         height: MediaQuery.of(context).size.width * 0.65,

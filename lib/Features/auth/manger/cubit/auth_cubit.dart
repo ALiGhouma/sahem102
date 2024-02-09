@@ -7,10 +7,13 @@ import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String? username;
+  // UserModel currentUser = authCubit.getCurrentUser();
 
   AuthCubit() : super(AuthInitianState());
 
   String? verificationID;
+
+  static get authCubit => null;
 
   void sendOTP(String phoneNumber, String userName) async {
     emit(AuthLoadingState());
@@ -75,6 +78,19 @@ class AuthCubit extends Cubit<AuthState> {
     _firebaseAuth.signOut();
   }
 
+// Access current user information
+  // UserInformation? getCurrentUser() {
+  //   final User? currentUser = _firebaseAuth.currentUser;
+  //   if (currentUser != null) {
+  //     return UserInformation(
+  //       uid: currentUser.uid,
+  //       phoneNumber: currentUser.phoneNumber,
+  //     );
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
 //  // helper funchin remmber to saveCurrentUserData
   void saveCurrentUserData() async {
     final user = _firebaseAuth.currentUser;
@@ -92,4 +108,14 @@ class AuthCubit extends Cubit<AuthState> {
           .set(userModel.toFirestore());
     }
   }
+}
+
+class UserInformation {
+  final String uid;
+  final String? phoneNumber;
+
+  UserInformation({
+    required this.uid,
+    this.phoneNumber,
+  });
 }

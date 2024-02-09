@@ -9,7 +9,6 @@ import 'package:sahem/Features/auth/data/user_model.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
-import 'package:sahem/Features/home/componants/bottomnav.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
 import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 
@@ -48,25 +47,23 @@ class _MyAppState extends State<MyApp> {
                   return previous is AuthInitianState;
                 },
                 builder: (context, state) {
-                  return CustomBottomNav(
-                      userModel: UserModel(
-                    id: "id",
-                    phoneNumber: "phoneNumber",
-                    username: "username",
-                  ));
-                  HomeView(
-                      userModel: UserModel(
-                    id: "id",
-                    phoneNumber: "phoneNumber",
-                    username: "username",
-                  ));
-                  // if (state is AuthLoggedInState) {
-                  //   return HomeView(userModel: state.userModel);
-                  // } else if (state is AuthLoggedOutState) {
-                  //   return const SiginInView();
-                  // } else {
-                  //   return const SiginInView();
-                  // }
+                  // return
+                  // // CustomBottomNav(
+                  // //     userModel: UserModel(
+                  // //   id: "id",
+                  // //   phoneNumber: "phoneNumber",
+                  // //   username: "username",
+                  // // ));
+                  // HomeView(
+                  // phoneNumber: state.us,
+                  //  username: '',);
+                  if (state is AuthLoggedInState) {
+                    return HomeView(userModel: state.userModel);
+                  } else if (state is AuthLoggedOutState) {
+                    return const SiginInView();
+                  } else {
+                    return const SiginInView();
+                  }
                 },
               ),
             ),

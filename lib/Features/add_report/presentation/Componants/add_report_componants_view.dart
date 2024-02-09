@@ -18,51 +18,12 @@ import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/resources/values_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
-import 'package:sahem/Features/add_report/Data/report_model.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/current_location.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/image_step_content.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/report_completed.dart';
-import 'package:sahem/Features/home/dropdown_list.dart';
-import 'package:sahem/Features/home/presentation/cubit/report_cubit.dart';
-import 'package:sahem/Features/home/presentation/report_camera.dart';
-import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
-import 'package:sahem/firebase_options.dart';
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatefulWidget {
-//   const MyApp({Key? key}) : super(key: key);
-
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: MyHomePage(),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatelessWidget {
-//   MyHomePage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: AddReportVomponantsView(),
-//     );
-//   }
-//}
+import 'package:sahem/Features/add_report/presentation/Componants/ReportDetailsView.dart';
+import 'package:sahem/Features/auth/data/user_model.dart';
+import 'package:sahem/Features/home/presentation/home_view.dart';
 
 class AddReportVomponantsView extends StatefulWidget {
   const AddReportVomponantsView({Key? key}) : super(key: key);
@@ -83,6 +44,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
     'خدمات المرور',
   ];
   bool isCompleted = false;
+  late final UserModel userModel;
 
   File? _selectedImage;
   Position? _currentPosition;
@@ -225,7 +187,9 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                               color: ColorManager.white),
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                             icon: Icon(
                               Icons.arrow_back_ios_new,
                               textDirection: TextDirection.ltr,
@@ -390,7 +354,10 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                     items: items.map((String items) {
                       return DropdownMenuItem(
                         value: items,
-                        child: Text(items),
+                        child: Text(
+                          items,
+                          style: getBoldStyle(fontSize: FontSize.s18),
+                        ),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -407,7 +374,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                     },
                   ),
                 ),
-                SecondDropDownlist(checker: firstDropdown)
+                ReportDetails(checker: firstDropdown)
               ])),
         ),
         Step(
@@ -493,8 +460,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
               // Report notes
               Row(
                 children: [
-                  (SecondDropDownlist.noteTexetController != null)
-                      ? Text(SecondDropDownlist.noteTexetController.text)
+                  (ReportDetails.noteTexetController != null)
+                      ? Text(ReportDetails.noteTexetController.text)
                       : Text(
                           "",
                           style: getRegularStyle(
@@ -520,8 +487,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppPadding.p16.h),
-                child: (SecondDropDownlist.secondDropdownValue != null)
-                    ? Text(SecondDropDownlist.secondDropdownValue!)
+                child: (ReportDetails.secondDropdownValue != null)
+                    ? Text(ReportDetails.secondDropdownValue!)
                     : Text(
                         "",
                         style: getRegularStyle(
@@ -548,10 +515,10 @@ class _MyStepperState extends State<AddReportVomponantsView> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppPadding.p16.h),
-                child: (SecondDropDownlist.noteTexetController.length > 0)
-                    ? Text(SecondDropDownlist.noteTexetController.text)
+                child: (ReportDetails.noteTexetController.length > 0)
+                    ? Text(ReportDetails.noteTexetController.text)
                     : Text(
-                        "لا توجد معلومات إضافية${SecondDropDownlist.noteTexetController.length}",
+                        "لا توجد معلومات إضافية${ReportDetails.noteTexetController.length}",
                         style: getRegularStyle(
                             color: Colors.red, fontSize: FontSize.s16),
                       ),
@@ -571,8 +538,8 @@ class _MyStepperState extends State<AddReportVomponantsView> {
   Future<String?> uploadFile() async {
     if (_selectedImage == null) return null;
 
-    final fileName = _selectedImage!.path;
-    final destination = 'files/$fileName';
+    //final fileName = _selectedImage!.path;
+    //final destination = 'files/$fileName';
     var time = DateTime.now().toString();
 
     try {
@@ -609,7 +576,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       var imageURL = await uploadFile();
 
       // Get the current location
-      var currentLocation = await _getCurrentPosition();
+      //var currentLocation = await _getCurrentPosition();
 
       // Get a reference to the Firestore database
       final firestore = FirebaseFirestore.instance;
@@ -622,11 +589,13 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       var data = {
         'reportId': reportId,
         'Catrogy': selectedFirstDropdownValue,
-        'Type': SecondDropDownlist.secondDropdownValue,
-        'Notes': SecondDropDownlist.noteTexetController.text,
+        'Type': ReportDetails.secondDropdownValue,
+        'Notes': ReportDetails.noteTexetController.text,
         'latitude': _currentPosition!.latitude,
         'longitude': _currentPosition?.longitude,
         'address': _currentAddress,
+        'imageURL': imageURL ??
+            '', // Use imageURL if available, otherwise an empty string
         'reviewed':
             false, // Flag indicating whether the report has been reviewed
       };
