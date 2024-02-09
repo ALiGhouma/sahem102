@@ -37,39 +37,42 @@ class Myprofile extends StatelessWidget {
                         color: Colors.black.withOpacity(0.3),
                         spreadRadius: 5,
                         blurRadius: 7,
-                        offset: Offset(0, 3),
+                        offset: Offset(2, 3),
                       ),
                     ],
                     borderRadius: BorderRadius.circular(15),
                     color: ColorManager.white),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          child: Icon(
-                            Icons.person_2_outlined,
-                            size: 32,
-                          ),
-                        ),
-                        addHorizontalSpace(16),
-                        Column(
-                          children: [
-                            addVerticalSpace(32),
-                            Text(
-                              "مرحبا",
-                              style: getRegularStyle(color: Colors.grey[400]),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            child: Icon(
+                              Icons.person_2_outlined,
+                              size: 32,
                             ),
-                            addVerticalSpace(12),
-                            Text(
-                              "أيمن",
-                              style: getRegularStyle(),
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  ],
+                          ),
+                          addHorizontalSpace(16),
+                          Column(
+                            children: [
+                              addVerticalSpace(32),
+                              Text(
+                                "مرحبا",
+                                style: getRegularStyle(color: Colors.grey[400]),
+                              ),
+                              addVerticalSpace(12),
+                              Text(
+                                "أيمن",
+                                style: getRegularStyle(),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -97,12 +100,11 @@ class Myprofile extends StatelessWidget {
           SizedBox(
               height: 320,
               width: 300,
-              child:
-                  Center(child: Image.asset('assets/images/Group 3659.jpg'))),
+              child: Center(child: Image.asset('assets/images/Group33.jpg'))),
           addVerticalSpace(0),
           Container(
-              width: 200.h,
-              height: 60.h,
+              width: 205.h,
+              height: 65.h,
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -119,7 +121,43 @@ class Myprofile extends StatelessWidget {
                   SizedBox(
                     height: 50,
                     width: 50,
-                    child: Image.asset('assets/images/GoldMedal.png'),
+                    child: Padding(
+                        padding: EdgeInsets.only(right: 8),
+                        child: Image.asset('assets/images/GoldMedal3.png')),
+                  ),
+                  Text(
+                    "يمنح الوسام عند تقيدم مبلاغ ",
+                    style: getRegularStyle(fontSize: 12, color: Colors.grey),
+                  )
+                ],
+              )),
+          addVerticalSpace(8),
+          Container(
+              width: 205.h,
+              height: 65.h,
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(15),
+                  color: ColorManager.white),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Padding(
+                        padding: EdgeInsets.only(right: 8),
+                        child: Image.asset('assets/images/GoldMedal.png')),
+                  ),
+                  Text(
+                    "يمنح الوسام عند تقيدم مبلاغ سليم",
+                    style: getRegularStyle(fontSize: 12, color: Colors.grey),
                   )
                 ],
               ))

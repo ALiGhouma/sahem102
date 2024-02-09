@@ -23,27 +23,29 @@ import 'package:sahem/Features/emergencyContact/componantes/rowscontnat.dart';
 class EmergencyContact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const Text(
-            "الوصول السريع",
-            style: TextStyle(fontSize: 30),
-          ),
-          const Text(
-            "للاستفادة منها في حال الطوارئ",
-            style: TextStyle(fontSize: 30),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            child: rowCard(),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          )
-        ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Text(
+              "الوصول السريع",
+              style: TextStyle(fontSize: 30),
+            ),
+            const Text(
+              "للاستفادة منها في حال الطوارئ",
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              child: rowCard(),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -11,6 +11,7 @@ import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
 import 'package:sahem/Features/auth/manger/cubit/auth_state.dart';
 import 'package:sahem/Features/emergencyContact/emergency_contact.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
+import 'package:sahem/Features/my_profile/myprofile.dart';
 import 'package:sahem/Features/myreport/my_reports.dart';
 import 'package:sahem/Features/nav_bar/manger/cubit/nav_cubit.dart';
 
@@ -20,6 +21,7 @@ class CustomBottomNav extends StatelessWidget {
     "جهات الطواريئ"
         "الرئيسية"
         "سجل البلاغات"
+        "الصفحة الشخصية"
   ];
   final NavigationCubit _navigationCubit = NavigationCubit();
   final AuthCubit _authCubit = AuthCubit();
@@ -75,6 +77,12 @@ class CustomBottomNav extends StatelessWidget {
                           ),
                           label: 'البلاغات',
                         ),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.person,
+                          ),
+                          label: 'الصفحة الشخصية',
+                        ),
                       ],
                     ),
                   );
@@ -125,6 +133,8 @@ class CustomBottomNav extends StatelessWidget {
       case 2:
         return ReportHistory();
       case 3:
+        return Myprofile();
+      case 4:
         return Scaffold(
           body: Center(
             child: Text(" empty page"),
