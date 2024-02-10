@@ -1,13 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
+import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
 import 'package:sahem/Core/utils/space_adder.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
+import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Myprofile extends StatelessWidget {
-  const Myprofile({super.key});
+  Myprofile({super.key});
+  final String? firebaseAuth =
+      FirebaseAuth.instance.currentUser?.phoneNumber.toString();
+  final AuthCubit _authCubit = AuthCubit();
 
+  //User username = _firebaseAuth.currentUser!.phoneNumber as User;
+//   //   if (currentUser != null) {
+//   //     return UserInformation(
+//   //       uid: currentUser.uid,
+//   //       phoneNumber: currentUser.phoneNumber,
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +35,31 @@ class Myprofile extends StatelessWidget {
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20)),
                   color: ColorManager.primary),
+            ),
+            Positioned(
+              left: MediaQuery.of(context).size.width * 0.05,
+              top: MediaQuery.of(context).size.height * 0.01,
+              child: IconButton(
+                icon: Column(
+                  children: [
+                    Icon(
+                      Icons.logout_rounded,
+                      textDirection: TextDirection.rtl,
+                      color: ColorManager.white,
+                      size: 32.sp,
+                    ),
+                    addVerticalSpace(2.h),
+                    Text(
+                      "الخروج",
+                      style: getRegularStyle(
+                          color: ColorManager.white, fontSize: FontSize.s12),
+                    )
+                  ],
+                ),
+                onPressed: () {
+                  _showLogoutConfirmationDialog(context);
+                },
+              ),
             ),
             Positioned(
               top: 62.h,
@@ -59,14 +97,47 @@ class Myprofile extends StatelessWidget {
                             children: [
                               addVerticalSpace(32),
                               Text(
-                                "مرحبا",
+                                "مرحبا$firebaseAuth",
                                 style: getRegularStyle(color: Colors.grey[400]),
                               ),
                               addVerticalSpace(12),
-                              Text(
-                                "أيمن",
-                                style: getRegularStyle(),
-                              )
+                              // Text(
+                              //   "أيمن",
+                              //   style: getRegularStyle(),
+                              // )
+                              FutureBuilder<String>(
+                                future: getUsernameFromSharedPreferences(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    // While waiting for the data to be fetched, show a loading indicator
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    // If there's an error fetching the data, display an error message
+                                    return Text('Error fetching username');
+                                  } else {
+                                    // If the data is fetched successfully, display the username
+                                    final username = snapshot.data;
+                                    return Column(
+                                      children: [
+                                        Text(
+                                          'مرحبا $username',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Text(
+                                          'Hello $username',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
                             ],
                           )
                         ],
@@ -165,6 +236,46 @@ class Myprofile extends StatelessWidget {
       ),
     );
   }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("تأكيد الخروج"),
+          content: Text("هل أنت متأكد أنك تريد تسجيل الخروج؟"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("لا"),
+            ),
+            TextButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: Text("نعم"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout(BuildContext context) {
+    // Delete username from SharedPreferences
+    _authCubit.saveUsername('');
+    // Postpone any process that requires the username
+    // Here you can add any additional cleanup tasks before logging out
+    // For example, you might want to clear the current user session, etc.
+    // Then navigate to the home page
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SiginInView()),
+      (route) => false,
+    );
+  }
 }
 
 class CustomHalfCircleClipper extends CustomClipper<Path> {
@@ -181,4 +292,10 @@ class CustomHalfCircleClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
   }
+}
+
+Future<String> getUsernameFromSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  return prefs.getString('username') ?? '';
 }

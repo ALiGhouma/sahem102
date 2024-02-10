@@ -44,44 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAzACmlAG9zumnbhzjLbeSQvbqi7Ojklmw',
-    appId: '1:916666430458:web:cd6ffc43f513a3e0f76a43',
-    messagingSenderId: '916666430458',
-    projectId: 'fir-test1-b2ec3',
-    authDomain: 'fir-test1-b2ec3.firebaseapp.com',
-    databaseURL: 'https://fir-test1-b2ec3-default-rtdb.firebaseio.com',
-    storageBucket: 'fir-test1-b2ec3.appspot.com',
-    measurementId: 'G-F6HV9YESTN',
+    apiKey: 'AIzaSyAe_fUi4pLSBluQXMXsxPp-4MsHN2bgNyk',
+    appId: '1:510860714546:web:24b9d143655bc71fcad22b',
+    messagingSenderId: '510860714546',
+    projectId: 'maharah-sahem',
+    authDomain: 'maharah-sahem.firebaseapp.com',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
+    storageBucket: 'maharah-sahem.appspot.com',
+    measurementId: 'G-Y3BD1FQDSG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDLZpfuaMvh_h8cI9hEFfXKO7P3gRVIjNg',
-    appId: '1:916666430458:android:0de290aaf4333520f76a43',
-    messagingSenderId: '916666430458',
-    projectId: 'fir-test1-b2ec3',
-    databaseURL: 'https://fir-test1-b2ec3-default-rtdb.firebaseio.com',
-    storageBucket: 'fir-test1-b2ec3.appspot.com',
+    apiKey: 'AIzaSyAq46bQ__j_7whACkdl6cDS6UXru5ee_1w',
+    appId: '1:510860714546:android:fb8d7f0cc760eff5cad22b',
+    messagingSenderId: '510860714546',
+    projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
+    storageBucket: 'maharah-sahem.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBf_Y-_5dAD_ejW4bWq90jIXzvltqfGSNA',
-    appId: '1:916666430458:ios:7ec4654009d4afc4f76a43',
-    messagingSenderId: '916666430458',
-    projectId: 'fir-test1-b2ec3',
-    databaseURL: 'https://fir-test1-b2ec3-default-rtdb.firebaseio.com',
-    storageBucket: 'fir-test1-b2ec3.appspot.com',
-    androidClientId: '916666430458-30msh47pulc717e9ufevqeqkd6ejmjs5.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBQwX8amnTzSxNIk5IqiRdStAxRMM2NnFQ',
+    appId: '1:510860714546:ios:4f32d9c4f98fee91cad22b',
+    messagingSenderId: '510860714546',
+    projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
+    storageBucket: 'maharah-sahem.appspot.com',
     iosBundleId: 'com.example.sahem',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBf_Y-_5dAD_ejW4bWq90jIXzvltqfGSNA',
-    appId: '1:916666430458:ios:81fdf4e882fec359f76a43',
-    messagingSenderId: '916666430458',
-    projectId: 'fir-test1-b2ec3',
-    databaseURL: 'https://fir-test1-b2ec3-default-rtdb.firebaseio.com',
-    storageBucket: 'fir-test1-b2ec3.appspot.com',
-    androidClientId: '916666430458-30msh47pulc717e9ufevqeqkd6ejmjs5.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBQwX8amnTzSxNIk5IqiRdStAxRMM2NnFQ',
+    appId: '1:510860714546:ios:8a8f7d2f22873e28cad22b',
+    messagingSenderId: '510860714546',
+    projectId: 'maharah-sahem',
+    databaseURL: 'https://maharah-sahem-default-rtdb.firebaseio.com',
+    storageBucket: 'maharah-sahem.appspot.com',
     iosBundleId: 'com.example.sahem.RunnerTests',
   );
 }

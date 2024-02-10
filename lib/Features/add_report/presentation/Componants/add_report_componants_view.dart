@@ -23,7 +23,10 @@ import 'package:sahem/Features/add_report/presentation/Componants/image_step_con
 import 'package:sahem/Features/add_report/presentation/Componants/report_completed.dart';
 import 'package:sahem/Features/add_report/presentation/Componants/ReportDetailsView.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
+import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
 import 'package:sahem/Features/home/presentation/home_view.dart';
+import 'package:sahem/Features/myreport/my_reports.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddReportVomponantsView extends StatefulWidget {
   const AddReportVomponantsView({Key? key}) : super(key: key);
@@ -65,6 +68,13 @@ class _MyStepperState extends State<AddReportVomponantsView> {
         });
       },
     );
+  }
+
+// Add the current user's phone number to the report data
+  Future<String?> getCurrentUserPhoneNumber() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? phoneNumber = prefs.getString('phoneNumber');
+    return phoneNumber;
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -138,9 +148,14 @@ class _MyStepperState extends State<AddReportVomponantsView> {
   Future<void> _getImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      _selectedImage = File(pickedFile!.path);
-    });
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    } else {
+      // User cancelled image selection
+      print('User cancelled image selection');
+    }
   }
 
   @override
@@ -212,20 +227,23 @@ class _MyStepperState extends State<AddReportVomponantsView> {
                     steps: getStep(),
                     currentStep: currentStep,
                     onStepContinue: () {
-                      final isLastStep = currentStep == getStep().length - 1;
+                      final isLastStep = currentStep ==
+                          getStep().length -
+                              1; // Adjusted to consider the actual number of steps
                       if (isLastStep) {
                         uploadFile();
-                        print("Complat");
+                        sendReportToFirebase(context);
+
+                        print("Complete");
 
                         setState(() {
                           isCompleted = true;
                         });
+                      } else {
+                        setState(() {
+                          currentStep = currentStep + 1;
+                        });
                       }
-                      currentStep == 3
-                          ? null
-                          : setState(() {
-                              currentStep = currentStep + 1;
-                            });
                     },
                     onStepTapped: (step) => setState(() {
                       currentStep = step;
@@ -584,6 +602,7 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       // Generate a unique ID for the report
       var reportId =
           (await firestore.collection('reports').get()).docs.length + 1;
+      var currentTime = DateTime.now();
 
       // Prepare the data to be sent
       var data = {
@@ -598,24 +617,50 @@ class _MyStepperState extends State<AddReportVomponantsView> {
             '', // Use imageURL if available, otherwise an empty string
         'reviewed':
             false, // Flag indicating whether the report has been reviewed
+        //'phoneNumber': userPhoneNumber, // Add the current user's phone number
+        'dateTime': currentTime, // Add the current date/time
       };
 
       // Add the data to Firestore
       await firestore.collection('reports').doc(reportId.toString()).set(data);
 
       // Close the CircularProgressIndicator dialog
-      Navigator.pop(context);
 
-      // Show a success Snackbar
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('تم إرسال البلاغ بنجاح'),
-        ),
+      // Show a success AlertDialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('تم اضافة مساهمتك'),
+            content: Text('شكرا جزيلا  \n سيتم مراجعة تقريرك قريبا '),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('حسنا'),
+              ),
+            ],
+          );
+        },
       );
 
-      // Reset the form or perform any other actions after sending the report
-      // For example:
-      // resetForm();
+      // Navigate to My Reports view after 3 seconds
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => UserReportsPage()),
+          (route) => false,
+        );
+      }
+          // Navigator.pop(context);
+
+          // // Show a success Snackbar
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text('تم إرسال البلاغ بنجاح'),
+          //   ),
+          );
     } catch (e) {
       // Close the CircularProgressIndicator dialog
       Navigator.pop(context);
@@ -630,60 +675,4 @@ class _MyStepperState extends State<AddReportVomponantsView> {
       print('Error sending report: $e');
     }
   }
-
-  // void sendReportToFirebase(BuildContext context) async {
-  //   try {
-  //     // Upload the image and get the download URL
-  //     var imageURL = await uploadFile();
-
-  //     // Get the current location
-  //     var currentLocation = await _getCurrentPosition();
-
-  //     // Get a reference to the Firestore database
-  //     final firestore = FirebaseFirestore.instance;
-
-  //     // Generate a unique ID for the report
-  //     var reportId =
-  //         (await firestore.collection('reports').get()).docs.length + 1;
-
-  //     // Prepare the data to be sent
-  //     var data = {
-  //       'reportId': reportId,
-  //       'Catrogy': selectedFirstDropdownValue,
-  //       'Type': SecondDropDownlist.secondDropdownValue,
-  //       'Notes': SecondDropDownlist.noteTexetController.length > 0
-  //           ? SecondDropDownlist.noteTexetController.text
-  //           : 'لاتوجد ملاحظات',
-  //       'imageURL': imageURL ??
-  //           '', // Use imageURL if available, otherwise an empty string
-  //       'latitude': _currentPosition!.latitude,
-  //       'longitude': _currentPosition?.longitude,
-  //       'address': _currentAddress,
-  //       'reviewed': false,
-  //     };
-
-  //     // Add the data to Firestore
-  //     await firestore.collection('reports').doc(reportId.toString()).set(data);
-
-  //     // Show a success Snackbar
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('تم إرسال البلاغ بنجاح'),
-  //       ),
-  //     );
-
-  //     // Reset the form or perform any other actions after sending the report
-  //     // For example:
-  //     // resetForm();
-  //   } catch (e) {
-  //     // Show an error Snackbar
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('حدث خطأ أثناء إرسال البلاغ'),
-  //       ),
-  //     );
-
-  //     print('Error sending report: $e');
-  //   }
-  // }
 }

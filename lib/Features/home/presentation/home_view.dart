@@ -212,12 +212,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
 import 'package:sahem/Core/resources/font_manger.dart';
 import 'package:sahem/Core/resources/style_manager.dart';
+import 'package:sahem/Core/utils/space_adder.dart';
 import 'package:sahem/Features/add_report/presentation/view/add_report_view.dart';
 import 'package:sahem/Features/auth/data/user_model.dart';
+import 'package:sahem/Features/auth/manger/cubit/auth_cubit.dart';
+import 'package:sahem/Features/auth/presentation/view/sigin_in_view.dart';
 import 'package:sahem/Features/home/componants/add_report_button.dart';
+import 'package:sahem/Features/nav_bar/view/BottomNav.dart';
 
 class HomeView extends StatefulWidget {
   final UserModel userModel;
+  final AuthCubit _authCubit = AuthCubit();
 
   HomeView({Key? key, required this.userModel}) : super(key: key);
 
@@ -277,6 +282,32 @@ class _HomeViewState extends State<HomeView> {
                           color: Colors.white.withOpacity(0.07),
                           shape: BoxShape.circle,
                         ),
+                      ),
+                    ),
+                    Positioned(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      top: MediaQuery.of(context).size.height * 0.01,
+                      child: IconButton(
+                        icon: Column(
+                          children: [
+                            Icon(
+                              Icons.logout_rounded,
+                              textDirection: TextDirection.rtl,
+                              color: ColorManager.white,
+                              size: 32.sp,
+                            ),
+                            addVerticalSpace(2.h),
+                            Text(
+                              "الخروج",
+                              style: getRegularStyle(
+                                  color: ColorManager.white,
+                                  fontSize: FontSize.s12),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          _showLogoutConfirmationDialog(context);
+                        },
                       ),
                     ),
                     Positioned(
@@ -394,6 +425,46 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("تأكيد الخروج"),
+          content: Text("هل أنت متأكد أنك تريد تسجيل الخروج؟"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("لا"),
+            ),
+            TextButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: Text("نعم"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _logout(BuildContext context) {
+    // Delete username from SharedPreferences
+    widget._authCubit.saveUsername('');
+    // Postpone any process that requires the username
+    // Here you can add any additional cleanup tasks before logging out
+    // For example, you might want to clear the current user session, etc.
+    // Then navigate to the home page
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SiginInView()),
+      (route) => false,
     );
   }
 }
