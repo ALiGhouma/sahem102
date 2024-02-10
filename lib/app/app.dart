@@ -65,10 +65,10 @@ class _MyAppState extends State<MyApp> {
                       phoneNumber: "أيمن",
                       username: "0920000000",
                     ));
-                  } else if (state is AuthLoggedInState) {
-                    return const SiginInView();
+                  } else if (state is AuthLoggedOutState) {
+                    return SiginInView();
                   } else {
-                    return const SiginInView();
+                    return SiginInView();
                   }
                 },
               ),

@@ -10,7 +10,7 @@ final List icon_name = [
     "PhoneNumber": "999"
   },
   {
-    "icon": "assets/icons/Help.png",
+    "icon": "assets/icons/help.png",
     "iconName": "Help",
     "PhoneNumber": "111"
   }, // Changed to PNG

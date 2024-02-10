@@ -68,15 +68,15 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   // helper funchin remmber if used loged in when close app
-  Future<bool> isUserLoggedIn() async {
-    final user = _firebaseAuth.currentUser;
-    return user != null;
-  }
+  // Future<bool> isUserLoggedIn() async {
+  //   final user = _firebaseAuth.currentUser;
+  //   return user != null;
+  // }
 
-  void logOut() async {
-    emit(AuthLoggedOutState());
-    _firebaseAuth.signOut();
-  }
+  // void logOut() async {
+  //   emit(AuthLoggedOutState());
+  //   _firebaseAuth.signOut();
+  // }
 
 // Access current user information
   // UserInformation? getCurrentUser() {
@@ -110,12 +110,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 }
 
-class UserInformation {
-  final String uid;
-  final String? phoneNumber;
+// class UserInformation {
+//   final String uid;
+//   final String? phoneNumber;
 
-  UserInformation({
-    required this.uid,
-    this.phoneNumber,
-  });
-}
+  // UserInformation({
+  //   required this.uid,
+  //   this.phoneNumber,
+  // });
+//}

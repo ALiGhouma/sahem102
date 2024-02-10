@@ -110,7 +110,12 @@ class _SignInFormState extends State<SignInForm> {
               if (state is AuthCodeSentState) {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(
+                  // CupertinoPageRoute(
+                  //   builder: (context) => VerifyPhoneNumber(
+                  //       phoneController: phoneController,
+                  //       nameController: nameController),
+                  // ),
+                  MaterialPageRoute(
                     builder: (context) => VerifyPhoneNumber(
                         phoneController: phoneController,
                         nameController: nameController),

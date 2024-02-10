@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sahem/Features/emergencyContact/componantes/rowCard.dart';
 import 'package:flutter/material.dart';
 import 'package:sahem/Core/resources/color_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:sahem/Core/resources/color_manager.dart';
 
 final List icon_name = [
   {
@@ -64,25 +67,27 @@ class rowCard extends StatelessWidget {
 class CardButton extends StatelessWidget {
   const CardButton({
     Key? key,
-    required this.imagePath, // Changed to imagePath
+    required this.imagePath,
     required this.textCard,
     required this.phoneNumber,
   }) : super(key: key);
 
-  final String imagePath; // Changed to imagePath
+  final String imagePath;
   final String textCard;
   final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _launchPhoneCall(phoneNumber);
+      },
       child: Container(
         child: Column(
           children: [
             const SizedBox(height: 5),
             Image.asset(
-              imagePath, // Changed to imagePath
+              imagePath,
               height: 80,
               width: 80,
             ),
@@ -118,5 +123,16 @@ class CardButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _launchPhoneCall(String phoneNumber) async {
+    String url = 'tel:$phoneNumber';
+    // ignore: deprecated_member_use
+    if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

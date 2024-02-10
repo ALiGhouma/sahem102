@@ -26,7 +26,8 @@ class _SiginInViewBodyState extends State<SiginInViewBody> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                //addVerticalSpace(60),
+                addVerticalSpace(0),
+                Image.asset('assets/images/logopng1.png'),
                 // SvgPicture.asset(
                 //   // we have other sequr Square libyan flag
                 //   ImageAssets.logo,
